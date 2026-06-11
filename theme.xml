@@ -29,7 +29,12 @@
     <meta content='Educational songs and learning videos for toddlers. Fun, safe, and completely free!' name='description'/>
   </b:if>
   <meta expr:content='data:blog.title' property='og:site_name'/>
-  <meta expr:content='data:blog.pageName' property='og:title'/>
+  <b:if cond='data:blog.pageName'>
+    <meta expr:content='data:blog.pageName' property='og:title'/>
+  </b:if>
+  <b:if cond='!data:blog.pageName'>
+    <meta expr:content='data:blog.title' property='og:title'/>
+  </b:if>
   <meta expr:content='data:blog.url' property='og:url'/>
   <b:if cond='data:blog.pageType == "item"'>
     <meta content='article' property='og:type'/>
@@ -66,9 +71,10 @@
   <link href='https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&amp;family=Fredoka:wght@300;400;500;600;700&amp;family=Nunito:wght@400;500;600;700;800&amp;display=swap' rel='stylesheet'/>
   <script type='application/ld+json'>{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;Organization&quot;,&quot;name&quot;:&quot;<data:blog.title/>&quot;,&quot;url&quot;:&quot;<data:blog.url/>&quot;,&quot;logo&quot;:&quot;https://pogotunes.blogspot.com/favicon.ico&quot;,&quot;sameAs&quot;:[&quot;https://www.facebook.com/profile.php?id=61590129552207&quot;,&quot;https://www.instagram.com/pogo.tunes/&quot;,&quot;https://in.pinterest.com/pogotunes/&quot;,&quot;https://www.youtube.com/@Pogotunes&quot;,&quot;https://x.com/pogotunes&quot;],&quot;contactPoint&quot;:{&quot;@type&quot;:&quot;ContactPoint&quot;,&quot;contactType&quot;:&quot;Customer Service&quot;}}</script>
   <script type='application/ld+json'>{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;WebSite&quot;,&quot;name&quot;:&quot;<data:blog.title/>&quot;,&quot;url&quot;:&quot;<data:blog.url/>&quot;,&quot;potentialAction&quot;:{&quot;@type&quot;:&quot;SearchAction&quot;,&quot;target&quot;:{&quot;@type&quot;:&quot;EntryPoint&quot;,&quot;urlTemplate&quot;:&quot;<data:blog.url/>search?q={search_term_string}&quot;},&quot;query-input&quot;:&quot;required name=search_term_string&quot;}}</script>
-  <b:if cond='data:blog.pageType == "item"'>
+  <b:if cond='data:blog.pageType == "item" or data:blog.pageType == "static_page"'>
     <b:loop values='data:posts' var='post'>
       <script type='application/ld+json'>{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;BlogPosting&quot;,&quot;headline&quot;:&quot;<data:post.title/>&quot;,&quot;image&quot;:&quot;<b:if cond='data:post.firstImageUrl'><data:post.firstImageUrl/></b:if><b:if cond='!data:post.firstImageUrl'>https://pogotunes.blogspot.com/favicon.ico</b:if>&quot;,&quot;datePublished&quot;:&quot;<data:post.date.iso8601/>&quot;,<b:if cond='data:post.dateHeader'>&quot;dateModified&quot;:&quot;<data:post.dateHeader/>&quot;,</b:if>&quot;author&quot;:{&quot;@type&quot;:&quot;Person&quot;,&quot;name&quot;:&quot;<data:post.author/>&quot;},&quot;articleBody&quot;:&quot;<b:if cond='data:post.snippet'><data:post.snippet/></b:if>&quot;}</script>
+      <script type='application/ld+json'>{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;BreadcrumbList&quot;,&quot;itemListElement&quot;:[{&quot;@type&quot;:&quot;ListItem&quot;,&quot;position&quot;:1,&quot;name&quot;:&quot;Home&quot;,&quot;item&quot;:&quot;<data:blog.homepageUrl/>&quot;},{&quot;@type&quot;:&quot;ListItem&quot;,&quot;position&quot;:2,&quot;name&quot;:&quot;<data:post.title/>&quot;,&quot;item&quot;:&quot;<data:post.url/>&quot;}]}</script>
     </b:loop>
   </b:if>
   <b:if cond='data:blog.pageType == "archive"'>
@@ -312,6 +318,43 @@ body.is-homepage #secBlog{padding-top:0}
 
 .archive-title{font-family:var(--font-display);font-size:2rem;color:var(--dark);margin-bottom:30px}
 
+.search-overlay{position:fixed;inset:0;background:rgba(45,52,54,0.78);z-index:10000;display:flex;align-items:flex-start;justify-content:center;padding:90px 18px 30px;opacity:0;visibility:hidden;transition:var(--transition);backdrop-filter:blur(8px)}
+.search-overlay.active{opacity:1;visibility:visible}
+.search-panel{width:min(760px,100%);background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:clamp(20px,4vw,35px);position:relative;animation:scaleIn .25s var(--bounce)}
+.search-close{position:absolute;top:14px;right:14px;width:42px;height:42px;border:0;border-radius:50%;background:var(--light);color:var(--dark);font-size:1.1rem;cursor:pointer;transition:var(--transition)}
+.search-close:hover,.search-close:focus{background:var(--coral);color:#fff;outline:2px solid var(--purple);outline-offset:2px}
+.search-panel h2{font-family:var(--font-display);font-size:1.8rem;color:var(--dark);margin-bottom:16px;padding-right:45px}
+.search-form{display:flex;gap:12px;align-items:center}
+.search-form input{flex:1;min-width:0;padding:16px 18px;border:2px solid #eee;border-radius:50px;font-family:var(--font-body);font-size:1rem;outline:none;transition:var(--transition)}
+.search-form input:focus{border-color:var(--coral);box-shadow:0 0 0 4px rgba(255,107,107,.12)}
+.share-section{margin:28px 0;padding:20px;background:linear-gradient(135deg,#fff8e7,#fff);border-radius:var(--radius);border:1px solid #f2ead4}
+.share-title,.related-title{font-family:var(--font-display);font-size:1.25rem;color:var(--dark);margin-bottom:14px}
+.share-buttons{display:flex;flex-wrap:wrap;gap:10px}
+.share-btn{border:0;border-radius:50px;padding:10px 16px;font-family:var(--font-rounded);font-weight:600;color:#fff;cursor:pointer;display:inline-flex;gap:8px;align-items:center;transition:var(--transition)}
+.share-btn:hover,.share-btn:focus{transform:translateY(-2px);box-shadow:var(--shadow);outline:2px solid rgba(0,0,0,.1);outline-offset:2px}
+.share-facebook{background:#1877f2}.share-x{background:#111}.share-whatsapp{background:#25d366}.share-pinterest{background:#bd081c}.share-copy{background:var(--purple)}
+.reading-progress{position:fixed;top:0;left:0;width:0;height:4px;background:linear-gradient(90deg,var(--yellow),var(--coral),var(--purple));z-index:10001;transition:width .1s linear}
+.related-posts{margin-top:45px;padding-top:28px;border-top:1px solid #eee}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.related-card{display:block;background:var(--white);border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow-sm);transition:var(--transition);border:1px solid #f1f1f1}
+.related-card:hover,.related-card:focus{transform:translateY(-3px);box-shadow:var(--shadow);outline:2px solid var(--coral);outline-offset:2px}
+.related-card img{width:100%;height:110px;object-fit:cover;background:var(--light)}
+.related-card span{display:block;padding:12px;font-family:var(--font-rounded);font-weight:600;font-size:.92rem;color:var(--dark);line-height:1.35}
+.related-empty{font-family:var(--font-body);color:var(--gray);background:var(--light);border-radius:var(--radius-sm);padding:14px}
+.post-body iframe,.post-body embed,.post-body object{max-width:100%;border:0;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm)}
+.post-body iframe[src*="youtube"],.post-body iframe[src*="vimeo"]{width:100%;aspect-ratio:16/9;height:auto}
+.updated-meta,.reading-time{display:inline-flex;align-items:center;gap:6px}
+.contact-card{margin:35px 0;padding:25px;background:linear-gradient(135deg,var(--light),#fff);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid #f3ecd6}
+.contact-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:15px}
+.contact-actions a{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:50px;background:var(--coral);color:#fff!important;font-family:var(--font-rounded);font-weight:700;text-decoration:none!important}
+.contact-actions a:nth-child(2){background:var(--purple)}
+.error-page{min-height:65vh;padding:clamp(110px,10vw,150px) 20px 70px;text-align:center;background:var(--white)}
+.error-page h1{font-family:var(--font-display);font-size:clamp(3rem,12vw,7rem);color:var(--coral);line-height:1}
+.error-page h2{font-family:var(--font-display);font-size:2rem;color:var(--dark);margin:15px 0}
+.error-page p{color:var(--gray);margin-bottom:25px}
+.contact-widget-shell{display:none;max-width:800px;margin:0 auto 60px;padding:0 20px}.contact-page .contact-widget-shell{display:block}.contact-widget-shell .widget{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}.contact-widget-shell h2,.contact-widget-shell h3{font-family:var(--font-display);color:var(--dark);margin-bottom:15px}.sidebar-widgets{display:none}
+@media(max-width:768px){.search-form{flex-direction:column}.search-form .btn-primary{width:100%;justify-content:center}.related-grid{grid-template-columns:1fr}.share-buttons{display:grid;grid-template-columns:1fr 1fr}.share-btn{justify-content:center}.single-post .post-body table{display:block;overflow-x:auto;white-space:nowrap}}
+
 @media(max-width:992px){
   .header-nav{display:none}
   .header-menu-btn{display:block}
@@ -341,7 +384,7 @@ body.is-homepage #secBlog{padding-top:0}
   ]]></b:skin>
 </head>
 <body>
-  <b:class cond='data:blog.pageType == "index"' name='is-homepage'/>
+  <b:class cond='data:blog.url == data:blog.homepageUrl' name='is-homepage'/>
   <b:class cond='data:blog.pageType == "item"' name='is-item'/>
   <b:class cond='data:blog.pageType == "static_page"' name='is-page'/>
   <b:class cond='data:blog.searchQuery' name='is-search'/>
@@ -378,6 +421,17 @@ body.is-homepage #secBlog{padding-top:0}
       </nav>
     </div>
   </header>
+
+  <div class='search-overlay' id='searchOverlay' aria-hidden='true' role='dialog' aria-modal='true' aria-labelledby='searchOverlayTitle'>
+    <div class='search-panel'>
+      <button class='search-close' id='searchClose' aria-label='Close search'><i class='fas fa-times' aria-hidden='true'/></button>
+      <h2 id='searchOverlayTitle'>Search Pogo Tunes</h2>
+      <form action='https://pogotunes.blogspot.com/search' class='search-form' method='get' role='search'>
+        <input autocomplete='off' id='searchInput' name='q' placeholder='Search ABCs, animals, colors, phonics...' type='search'/>
+        <button class='btn-primary' type='submit'><i class='fas fa-search' aria-hidden='true'/> Search</button>
+      </form>
+    </div>
+  </div>
 
   <div id='homepageSections'>
     <section id='secHero' aria-label='Hero Section'>
@@ -451,12 +505,20 @@ body.is-homepage #secBlog{padding-top:0}
               </div>
             </section>
           </b:if>
-          <b:if cond='data:blog.pageType == "search" or data:blog.pageType == "archive"'>
+          <b:if cond='data:blog.pageType == "search" or data:blog.pageType == "archive" or data:blog.searchQuery or data:blog.searchLabel'>
             <section id='secSearchResults' role='region' aria-label='Search Results'>
               <div class='container'>
                 <div class='search-results-header'>
                   <b:if cond='data:blog.pageType == "search"'>
-                    <h2>Search Results for &quot;<data:blog.searchQuery/>&quot;</h2>
+                    <b:if cond='data:blog.searchQuery'>
+                      <h2>Search Results for &quot;<data:blog.searchQuery/>&quot;</h2>
+                    </b:if>
+                    <b:if cond='data:blog.searchLabel'>
+                      <h2>Learning Label: <data:blog.searchLabel/></h2>
+                    </b:if>
+                    <b:if cond='!data:blog.searchQuery and !data:blog.searchLabel'>
+                      <h2><data:blog.pageName/></h2>
+                    </b:if>
                   </b:if>
                   <b:if cond='data:blog.pageType == "archive"'>
                     <h2 class='archive-title'><data:blog.pageName/></h2>
@@ -480,7 +542,7 @@ body.is-homepage #secBlog{padding-top:0}
               </div>
             </section>
           </b:if>
-          <b:if cond='data:blog.pageType == "index"'>
+          <b:if cond='data:blog.pageType == "index" and !data:blog.searchQuery and !data:blog.searchLabel'>
             <div class='blog-section-inner'>
               <div class='container'>
                 <h2 class='section-title'>📝 Latest Posts</h2>
@@ -553,28 +615,74 @@ body.is-homepage #secBlog{padding-top:0}
         </b:includable>
 
         <b:includable id='post' var='post'>
-          <article class='single-post-article'>
+          <article class='single-post-article' expr:data-post-url='data:post.url' expr:data-post-title='data:post.title'>
             <b:if cond='data:post.firstImageUrl'>
-              <img alt='' class='post-featured-img' expr:src='data:post.firstImageUrl'/>
+              <img class='post-featured-img' expr:alt='data:post.title' expr:src='data:post.firstImageUrl' loading='eager'/>
             </b:if>
             <h1 class='post-title'><data:post.title/></h1>
             <div class='post-meta'>
-              <b:if cond='data:post.date'>
-                <span><i class='fas fa-calendar-alt' aria-hidden='true'/> <data:post.date/></span>
-              </b:if>
               <b:if cond='data:post.author'>
                 <span><i class='fas fa-user' aria-hidden='true'/> <data:post.author/></span>
               </b:if>
+              <b:if cond='data:post.date'>
+                <span><i class='fas fa-calendar-alt' aria-hidden='true'/> Published <data:post.date/></span>
+                <span class='updated-meta'><i class='fas fa-rotate' aria-hidden='true'/> Updated <data:post.date/></span>
+              </b:if>
+              <span class='reading-time'><i class='fas fa-clock' aria-hidden='true'/> <span class='reading-time-value'>1 min read</span></span>
               <b:if cond='data:post.numberOfComments gt 0'>
                 <span><i class='fas fa-comments' aria-hidden='true'/> <data:post.numberOfComments/> comments</span>
               </b:if>
             </div>
+            <b:if cond='data:post.labels'>
+              <div class='post-labels-list' aria-label='Post labels'>
+                <b:loop values='data:post.labels' var='label'>
+                  <a expr:href='data:label.url' rel='tag'><data:label.name/></a>
+                </b:loop>
+              </div>
+            </b:if>
             <div class='post-body'>
               <data:post.body/>
             </div>
+            <b:if cond='data:blog.pageType == &quot;static_page&quot;'>
+              <b:if cond='data:blog.pageName == &quot;Contact&quot; or data:blog.pageName == &quot;Contact Us&quot;'>
+                <section class='contact-card' aria-label='Contact Pogo Tunes'>
+                  <h2>Contact Pogo Tunes</h2>
+                  <p>Have a question, suggestion, collaboration request, or feedback for our learning videos? Use the official channels below and we will get back to you.</p>
+                  <div class='contact-actions'>
+                    <a href='https://www.facebook.com/profile.php?id=61590129552207' rel='noopener noreferrer' target='_blank'><i class='fab fa-facebook-f' aria-hidden='true'/> Message on Facebook</a>
+                    <a href='https://www.instagram.com/pogo.tunes/' rel='noopener noreferrer' target='_blank'><i class='fab fa-instagram' aria-hidden='true'/> Message on Instagram</a>
+                  </div>
+                </section>
+              </b:if>
+            </b:if>
+            <b:if cond='data:blog.pageType == &quot;item&quot;'>
+              <section class='share-section' aria-label='Share this post'>
+                <h2 class='share-title'>Share this lesson</h2>
+                <div class='share-buttons'>
+                  <button class='share-btn share-facebook' data-share='facebook' type='button'><i class='fab fa-facebook-f' aria-hidden='true'/> Facebook</button>
+                  <button class='share-btn share-x' data-share='x' type='button'><i class='fab fa-x-twitter' aria-hidden='true'/> X</button>
+                  <button class='share-btn share-whatsapp' data-share='whatsapp' type='button'><i class='fab fa-whatsapp' aria-hidden='true'/> WhatsApp</button>
+                  <button class='share-btn share-pinterest' data-share='pinterest' type='button'><i class='fab fa-pinterest-p' aria-hidden='true'/> Pinterest</button>
+                  <button class='share-btn share-copy' data-share='copy' type='button'><i class='fas fa-link' aria-hidden='true'/> Copy Link</button>
+                </div>
+              </section>
+              <section class='related-posts' aria-label='Related posts'>
+                <h2 class='related-title'>Related Learning Posts</h2>
+                <div class='related-source' hidden='hidden'>
+                  <b:if cond='data:post.labels'>
+                    <b:loop values='data:post.labels' var='label'>
+                      <span class='related-label'><data:label.name/></span>
+                    </b:loop>
+                  </b:if>
+                </div>
+                <div class='related-grid' id='relatedPosts'>
+                  <p class='related-empty'>Loading related posts...</p>
+                </div>
+              </section>
+            </b:if>
             <b:if cond='data:post.labels'>
               <div class='labels-section'>
-                <h3 class='post-labels-title'>Labels</h3>
+                <h2 class='post-labels-title'>Explore more labels</h2>
                 <div class='post-labels-list'>
                   <b:loop values='data:post.labels' var='label'>
                     <a expr:href='data:label.url'><data:label.name/></a>
@@ -590,26 +698,16 @@ body.is-homepage #secBlog{padding-top:0}
                     <data:newerPageTitle/>
                   </a>
                 </b:if>
-                <b:if cond='!data:newerPageUrl'>
-                  <span class='prev' style='opacity:0.5'>
-                    <span class='nav-label'><i class='fas fa-arrow-left' aria-hidden='true'/> Previous</span>
-                  </span>
-                </b:if>
                 <b:if cond='data:olderPageUrl'>
                   <a class='next' expr:href='data:olderPageUrl' title='Next post'>
                     <span class='nav-label'>Next <i class='fas fa-arrow-right' aria-hidden='true'/></span>
                     <data:olderPageTitle/>
                   </a>
                 </b:if>
-                <b:if cond='!data:olderPageUrl'>
-                  <span class='next' style='opacity:0.5'>
-                    <span class='nav-label'>Next <i class='fas fa-arrow-right' aria-hidden='true'/></span>
-                  </span>
-                </b:if>
               </nav>
             </b:if>
             <b:if cond='data:post.allowComments'>
-              <section class='comments-wrapper' aria-label='Comments section'>
+              <section class='comments-wrapper' aria-label='Comments section' id='comments'>
                 <h2 class='comments-title'><i class='fas fa-comments' aria-hidden='true'/> Comments</h2>
                 <b:if cond='data:post.comments.size gt 0'>
                   <b:include data='post.comments' name='comments'/>
@@ -634,12 +732,39 @@ body.is-homepage #secBlog{padding-top:0}
 
         <b:includable id='comment-form' var='post'>
           <b:if cond='data:post.allowComments'>
-            <b:include data='post' name='blogger-comment-form'/>
+            <div class='comment-form-wrapper'>
+              <h3 class='comments-title'>Leave a Comment</h3>
+              <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:src='data:post.commentFormIframeSrc' frameborder='0' height='260' id='comment-editor' name='comment-editor' title='Comment form' width='100%'/>
+            </div>
           </b:if>
         </b:includable>
       </b:widget>
     </b:section>
   </main>
+
+  <div class='contact-widget-shell' id='contactWidgetShell' aria-label='Blogger contact form'>
+    <b:section id='secContactForm' maxwidgets='1' showaddelement='no'>
+      <b:widget id='ContactForm1' locked='false' title='Send Pogo Tunes a Message' type='ContactForm' version='2'/>
+    </b:section>
+  </div>
+
+  <b:if cond='data:blog.pageType == &quot;error_page&quot;'>
+    <section class='error-page' role='main' aria-label='Page not found'>
+      <div class='container'>
+        <h1>404</h1>
+        <h2>Oops! This learning page was not found.</h2>
+        <p>The page may have moved. Return home or search for another Pogo Tunes lesson.</p>
+        <a class='btn-primary' expr:href='data:blog.homepageUrl'>Back to Home</a>
+      </div>
+    </section>
+  </b:if>
+
+  <aside class='sidebar-widgets' aria-label='Blogger label and archive widgets'>
+    <b:section id='secLabelsArchive' maxwidgets='2' showaddelement='yes'>
+      <b:widget id='Label1' locked='false' title='Learning Labels' type='Label' version='2'/>
+      <b:widget id='BlogArchive1' locked='false' title='Archives' type='BlogArchive' version='2'/>
+    </b:section>
+  </aside>
 
   <footer role='contentinfo'>
     <div class='container'>
@@ -738,16 +863,109 @@ body.is-homepage #secBlog{padding-top:0}
       yearElement.textContent = new Date().getFullYear();
     }
 
-    // Blogger search button
+    // Contact page helper for the Blogger ContactForm widget
+    if (window.location.pathname === '/p/contact.html') {
+      document.body.classList.add('contact-page');
+    }
+
+    // Blogger search overlay
     var searchBtn = document.getElementById('searchBtn');
+    var searchOverlay = document.getElementById('searchOverlay');
+    var searchClose = document.getElementById('searchClose');
+    var searchInput = document.getElementById('searchInput');
+    function openSearch() {
+      if (!searchOverlay) { return; }
+      searchOverlay.classList.add('active');
+      searchOverlay.setAttribute('aria-hidden', 'false');
+      if (searchInput) { window.setTimeout(function(){ searchInput.focus(); }, 80); }
+    }
+    function closeSearch() {
+      if (!searchOverlay) { return; }
+      searchOverlay.classList.remove('active');
+      searchOverlay.setAttribute('aria-hidden', 'true');
+      if (searchBtn) { searchBtn.focus(); }
+    }
     if (searchBtn) {
       searchBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        var query = window.prompt('Search Pogo Tunes');
-        if (query && query.trim()) {
-          window.location.href = 'https://pogotunes.blogspot.com/search?q=' + encodeURIComponent(query.trim());
-        }
+        openSearch();
       });
+    }
+    if (searchClose) { searchClose.addEventListener('click', closeSearch); }
+    if (searchOverlay) {
+      searchOverlay.addEventListener('click', function(e) {
+        if (e.target === searchOverlay) { closeSearch(); }
+      });
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closeSearch(); }
+    });
+
+    // Reading progress and estimated reading time
+    var article = document.querySelector('.single-post-article');
+    if (article) {
+      var progress = document.createElement('div');
+      progress.className = 'reading-progress';
+      document.body.appendChild(progress);
+      var bodyText = article.querySelector('.post-body');
+      var words = bodyText ? (bodyText.textContent || '').trim().split(/\s+/).filter(Boolean).length : 0;
+      var minutes = Math.max(1, Math.ceil(words / 180));
+      var readingValue = article.querySelector('.reading-time-value');
+      if (readingValue) { readingValue.textContent = minutes + ' min read'; }
+      window.addEventListener('scroll', function() {
+        var rect = article.getBoundingClientRect();
+        var total = Math.max(1, article.offsetHeight - window.innerHeight);
+        var passed = Math.min(Math.max(-rect.top, 0), total);
+        progress.style.width = ((passed / total) * 100) + '%';
+      }, {passive:true});
+    }
+
+    // Share buttons
+    var shareButtons = document.querySelectorAll('[data-share]');
+    shareButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var url = window.location.href;
+        var title = document.title;
+        var type = btn.getAttribute('data-share');
+        var shareUrl = '';
+        if (type === 'facebook') { shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url); }
+        if (type === 'x') { shareUrl = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(title); }
+        if (type === 'whatsapp') { shareUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(title + ' ' + url); }
+        if (type === 'pinterest') { shareUrl = 'https://pinterest.com/pin/create/button/?url=' + encodeURIComponent(url) + '&description=' + encodeURIComponent(title); }
+        if (type === 'copy') {
+          if (navigator.clipboard) { navigator.clipboard.writeText(url); }
+          btn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copied';
+          window.setTimeout(function(){ btn.innerHTML = '<i class="fas fa-link" aria-hidden="true"></i> Copy Link'; }, 1800);
+          return;
+        }
+        if (shareUrl) { window.open(shareUrl, '_blank', 'noopener,noreferrer,width=700,height=520'); }
+      });
+    });
+
+    // Dynamic related posts from first label, excluding current URL
+    var relatedGrid = document.getElementById('relatedPosts');
+    if (relatedGrid) {
+      var firstLabel = document.querySelector('.related-label');
+      if (firstLabel && firstLabel.textContent.trim()) {
+        var feedUrl = 'https://pogotunes.blogspot.com/feeds/posts/default/-/' + encodeURIComponent(firstLabel.textContent.trim()) + '?alt=json&max-results=8';
+        fetch(feedUrl).then(function(res){ return res.json(); }).then(function(data) {
+          var entries = (data.feed && data.feed.entry) ? data.feed.entry : [];
+          var current = window.location.href.replace(/[#?].*$/, '');
+          var html = '';
+          entries.forEach(function(entry) {
+            if (html.split('related-card').length > 3) { return; }
+            var link = (entry.link || []).filter(function(l){ return l.rel === 'alternate'; })[0];
+            if (!link || link.href.replace(/[#?].*$/, '') === current) { return; }
+            var title = entry.title ? entry.title.$t : 'Related post';
+            var img = 'https://pogotunes.blogspot.com/favicon.ico';
+            if (entry.media$thumbnail && entry.media$thumbnail.url) { img = entry.media$thumbnail.url.replace('/s72-c/', '/s320/'); }
+            html += '<a class="related-card" href="' + link.href + '"><img alt="" loading="lazy" src="' + img + '"/><span>' + title + '</span></a>';
+          });
+          relatedGrid.innerHTML = html || '<p class="related-empty">More related learning posts will appear here soon.</p>';
+        }).catch(function(){ relatedGrid.innerHTML = '<p class="related-empty">More related learning posts will appear here soon.</p>'; });
+      } else {
+        relatedGrid.innerHTML = '<p class="related-empty">More related learning posts will appear here soon.</p>';
+      }
     }
     
     // Intersection Observer for fade-in animations
