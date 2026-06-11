@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
+<!DOCTYPE html [
+  <!ENTITY copy "&#169;">
+  <!ENTITY nbsp "&#160;">
+  <!ENTITY mdash "&#8212;">
+  <!ENTITY ndash "&#8211;">
+  <!ENTITY ldquo "&#8220;">
+  <!ENTITY rdquo "&#8221;">
+  <!ENTITY hellip "&#8230;">
+  <!ENTITY bull "&#8226;">
+]>
 <html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateVersion='1.0.0' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
   <meta charset='UTF-8'/>
@@ -552,7 +561,7 @@ body.is-homepage #secBlog{padding-top:0}
         </div>
       </div>
       <div class='footer-bottom'>
-        <p>&copy; <span id='year'>2024</span> Pogo Tunes. All rights reserved.</p>
+        <p>&#169; <span id='year'>2024</span> Pogo Tunes. All rights reserved.</p>
       </div>
     </div>
   </div>
