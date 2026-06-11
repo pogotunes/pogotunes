@@ -385,9 +385,11 @@ body.is-homepage #secBlog{padding-top:0}
 </head>
 <body>
   <b:class cond='data:blog.url == data:blog.homepageUrl' name='is-homepage'/>
+  <b:class cond='data:view.isSingleItem or data:blog.pageType == "item"' name='is-item'/>
   <b:class cond='data:blog.pageType == "item"' name='is-item'/>
   <b:class cond='data:blog.pageType == "static_page"' name='is-page'/>
   <b:class cond='data:blog.searchQuery' name='is-search'/>
+  <b:class cond='data:blog.searchLabel' name='is-label'/>
   <b:class cond='data:blog.pageType == "error_page"' name='is-error'/>
   <b:class cond='data:blog.pageType == "archive"' name='is-archive'/>
   <script>document.body.classList.add('js-active');</script>
@@ -491,7 +493,7 @@ body.is-homepage #secBlog{padding-top:0}
           <b:widget-setting name='showTimestamp'>true</b:widget-setting>
         </b:widget-settings>
         <b:includable id='main' var='top'>
-          <b:if cond='data:blog.pageType == "item" or data:blog.pageType == "static_page"'>
+          <b:if cond='data:view.isSingleItem or data:blog.pageType == "item" or data:blog.pageType == "static_page"'>
             <section id='secSingle' role='article' aria-label='Single Post'>
               <div class='single-post'>
                 <nav class='breadcrumb' aria-label='Breadcrumb navigation'>
@@ -509,19 +511,17 @@ body.is-homepage #secBlog{padding-top:0}
             <section id='secSearchResults' role='region' aria-label='Search Results'>
               <div class='container'>
                 <div class='search-results-header'>
-                  <b:if cond='data:blog.pageType == "search"'>
-                    <b:if cond='data:blog.searchQuery'>
-                      <h2>Search Results for &quot;<data:blog.searchQuery/>&quot;</h2>
-                    </b:if>
-                    <b:if cond='data:blog.searchLabel'>
-                      <h2>Learning Label: <data:blog.searchLabel/></h2>
-                    </b:if>
-                    <b:if cond='!data:blog.searchQuery and !data:blog.searchLabel'>
-                      <h2><data:blog.pageName/></h2>
-                    </b:if>
+                  <b:if cond='data:blog.searchQuery'>
+                    <h2>Search Results for &quot;<data:blog.searchQuery/>&quot;</h2>
+                  </b:if>
+                  <b:if cond='data:blog.searchLabel'>
+                    <h2>Learning Label: <data:blog.searchLabel/></h2>
                   </b:if>
                   <b:if cond='data:blog.pageType == "archive"'>
                     <h2 class='archive-title'><data:blog.pageName/></h2>
+                  </b:if>
+                  <b:if cond='!data:blog.searchQuery and !data:blog.searchLabel and data:blog.pageType != "archive"'>
+                    <h2><data:blog.pageName/></h2>
                   </b:if>
                 </div>
                 <b:if cond='data:posts.size == 0'>
@@ -615,7 +615,7 @@ body.is-homepage #secBlog{padding-top:0}
         </b:includable>
 
         <b:includable id='post' var='post'>
-          <article class='single-post-article' expr:data-post-url='data:post.url' expr:data-post-title='data:post.title'>
+          <article class='single-post-article'>
             <b:if cond='data:post.firstImageUrl'>
               <img class='post-featured-img' expr:alt='data:post.title' expr:src='data:post.firstImageUrl' loading='eager'/>
             </b:if>
@@ -629,6 +629,7 @@ body.is-homepage #secBlog{padding-top:0}
                 <span class='updated-meta'><i class='fas fa-rotate' aria-hidden='true'/> Updated <data:post.date/></span>
               </b:if>
               <span class='reading-time'><i class='fas fa-clock' aria-hidden='true'/> <span class='reading-time-value'>1 min read</span></span>
+              <b:if cond='data:post.allowComments'>
               <b:if cond='data:post.numberOfComments gt 0'>
                 <span><i class='fas fa-comments' aria-hidden='true'/> <data:post.numberOfComments/> comments</span>
               </b:if>
@@ -734,6 +735,7 @@ body.is-homepage #secBlog{padding-top:0}
           <b:if cond='data:post.allowComments'>
             <div class='comment-form-wrapper'>
               <h3 class='comments-title'>Leave a Comment</h3>
+              <b:include data='post' name='blogger-comment-form'/>
               <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:src='data:post.commentFormIframeSrc' frameborder='0' height='260' id='comment-editor' name='comment-editor' title='Comment form' width='100%'/>
             </div>
           </b:if>
