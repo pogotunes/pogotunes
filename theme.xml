@@ -379,7 +379,7 @@ body.is-homepage #secBlog{padding-top:0}
 </head>
 <body>
   <b:class cond='data:blog.url == data:blog.homepageUrl' name='is-homepage'/>
-  <b:class cond='data:blog.pageType == "item"' name='is-item'/>
+  <b:class cond='data:view.isSingleItem or data:blog.pageType == "item"' name='is-item'/>
   <b:class cond='data:blog.pageType == "static_page"' name='is-page'/>
   <b:class cond='data:blog.searchQuery' name='is-search'/>
   <b:class cond='data:blog.searchLabel' name='is-label'/>
@@ -486,7 +486,7 @@ body.is-homepage #secBlog{padding-top:0}
           <b:widget-setting name='showTimestamp'>true</b:widget-setting>
         </b:widget-settings>
         <b:includable id='main' var='top'>
-          <b:if cond='data:blog.pageType == "item" or data:blog.pageType == "static_page"'>
+          <b:if cond='data:view.isSingleItem or data:blog.pageType == "item" or data:blog.pageType == "static_page"'>
             <section id='secSingle' role='article' aria-label='Single Post'>
               <div class='single-post'>
                 <nav class='breadcrumb' aria-label='Breadcrumb navigation'>
@@ -613,8 +613,6 @@ body.is-homepage #secBlog{padding-top:0}
               <img class='post-featured-img' expr:alt='data:post.title' expr:src='data:post.firstImageUrl' loading='eager'/>
             </b:if>
             <h1 class='post-title'><data:post.title/></h1>
-            <script type='application/ld+json'>{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;BlogPosting&quot;,&quot;mainEntityOfPage&quot;:{&quot;@type&quot;:&quot;WebPage&quot;,&quot;@id&quot;:&quot;<data:post.url/>&quot;},&quot;headline&quot;:&quot;<data:post.title/>&quot;,&quot;image&quot;:&quot;<b:if cond='data:post.firstImageUrl'><data:post.firstImageUrl/></b:if><b:if cond='!data:post.firstImageUrl'>https://pogotunes.blogspot.com/favicon.ico</b:if>&quot;,&quot;datePublished&quot;:&quot;<data:post.date/>&quot;,&quot;dateModified&quot;:&quot;<data:post.date/>&quot;,&quot;author&quot;:{&quot;@type&quot;:&quot;Person&quot;,&quot;name&quot;:&quot;<data:post.author/>&quot;},&quot;publisher&quot;:{&quot;@type&quot;:&quot;Organization&quot;,&quot;name&quot;:&quot;<data:blog.title/>&quot;,&quot;logo&quot;:{&quot;@type&quot;:&quot;ImageObject&quot;,&quot;url&quot;:&quot;https://pogotunes.blogspot.com/favicon.ico&quot;}},&quot;description&quot;:&quot;<b:if cond='data:post.snippet'><data:post.snippet/></b:if>&quot;}</script>
-            <script type='application/ld+json'>{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;BreadcrumbList&quot;,&quot;itemListElement&quot;:[{&quot;@type&quot;:&quot;ListItem&quot;,&quot;position&quot;:1,&quot;name&quot;:&quot;Home&quot;,&quot;item&quot;:&quot;<data:blog.homepageUrl/>&quot;},{&quot;@type&quot;:&quot;ListItem&quot;,&quot;position&quot;:2,&quot;name&quot;:&quot;<data:post.title/>&quot;,&quot;item&quot;:&quot;<data:post.url/>&quot;}]}</script>
             <div class='post-meta'>
               <b:if cond='data:post.author'>
                 <span><i class='fas fa-user' aria-hidden='true'/> <data:post.author/></span>
@@ -624,7 +622,7 @@ body.is-homepage #secBlog{padding-top:0}
                 <span class='updated-meta'><i class='fas fa-rotate' aria-hidden='true'/> Updated <data:post.date/></span>
               </b:if>
               <span class='reading-time'><i class='fas fa-clock' aria-hidden='true'/> <span class='reading-time-value'>1 min read</span></span>
-              <b:if cond='data:post.numberOfComments gt 0'>
+              <b:if cond='data:post.allowComments'>
                 <span><i class='fas fa-comments' aria-hidden='true'/> <data:post.numberOfComments/> comments</span>
               </b:if>
             </div>
@@ -729,7 +727,7 @@ body.is-homepage #secBlog{padding-top:0}
           <b:if cond='data:post.allowComments'>
             <div class='comment-form-wrapper'>
               <h3 class='comments-title'>Leave a Comment</h3>
-              <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:src='data:post.commentFormIframeSrc' frameborder='0' height='260' id='comment-editor' name='comment-editor' title='Comment form' width='100%'/>
+              <b:include data='post' name='blogger-comment-form'/>
             </div>
           </b:if>
         </b:includable>
