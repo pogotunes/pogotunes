@@ -1,0 +1,580 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  TEACHER
+  ADMIN
+  SUPERADMIN
+}
+
+enum LessonType {
+  VIDEO
+  ARTICLE
+  QUIZ
+  GAME
+  FLASHCARD
+  PRACTICE
+}
+
+enum QuizType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  MATCH
+  FILL_BLANKS
+  DRAG_DROP
+  MEMORY
+  IMAGE_QUIZ
+  TIMED
+}
+
+enum GameType {
+  MEMORY
+  PUZZLE
+  SORTING
+  MATCHING
+  DRAG_DROP
+  TAP
+  SPEED
+  SPELLING
+  COUNTING
+  COLOR
+  SHAPE
+  MAZE
+}
+
+enum Difficulty {
+  BEGINNER
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+  SCHEDULED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  emailVerified DateTime?
+  phone         String?
+  password      String?
+  name          String?
+  displayName   String?
+  avatar        String?
+  role          UserRole  @default(USER)
+  googleId      String?   @unique
+  facebookId    String?   @unique
+  githubId      String?   @unique
+  isActive      Boolean   @default(true)
+  isPremium     Boolean   @default(false)
+  premiumUntil  DateTime?
+  lastLoginAt   DateTime?
+  twoFactorAuth Boolean   @default(false)
+  otpSecret     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  profile        Profile?
+  progress       Progress[]
+  achievements   UserAchievement[]
+  bookmarks      Bookmark[]
+  comments       Comment[]
+  likes          Like[]
+  certificates   Certificate[]
+  notifications  Notification[]
+  settings       UserSettings?
+  quizProgress   QuizProgress[]
+  sessions       Session[]
+  loginHistory   LoginHistory[]
+}
+
+model Profile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio           String?
+  age           Int?
+  grade         String?
+  school        String?
+  parentEmail   String?
+  parentPhone   String?
+  country       String?
+  city          String?
+  timezone      String?
+  language      String   @default("en")
+  xp            Int      @default(0)
+  coins         Int      @default(0)
+  stars         Int      @default(0)
+  level         Int      @default(1)
+  streak        Int      @default(0)
+  longestStreak Int      @default(0)
+  lastActiveAt  DateTime @default(now())
+  totalLessons  Int      @default(0)
+  totalQuizzes  Int      @default(0)
+  totalGames    Int      @default(0)
+  totalVideos   Int      @default(0)
+  totalPoints   Int      @default(0)
+  accuracy      Float    @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model UserSettings {
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme           String  @default("light")
+  fontSize        String  @default("medium")
+  reducedMotion   Boolean @default(false)
+  highContrast    Boolean @default(false)
+  emailNotifications Boolean @default(true)
+  pushNotifications Boolean @default(true)
+  soundEnabled    Boolean @default(true)
+  autoPlay        Boolean @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token      String   @unique
+  device     String?
+  browser    String?
+  os         String?
+  ip         String?
+  location   String?
+  isActive   Boolean  @default(true)
+  lastUsedAt DateTime @default(now())
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+}
+
+model LoginHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider  String
+  ip        String?
+  device    String?
+  browser   String?
+  os        String?
+  location  String?
+  success   Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  icon        String?
+  image       String?
+  color       String?
+  order       Int       @default(0)
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  lessons    Lesson[]
+  videos     Video[]
+  games      Game[]
+  quizzes    Quiz[]
+  flashcards Flashcard[]
+}
+
+model Lesson {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  description   String?
+  content       String?
+  categoryId    String
+  category      Category      @relation(fields: [categoryId], references: [id])
+  image         String?
+  videoUrl      String?
+  duration      Int?
+  difficulty    Difficulty    @default(BEGINNER)
+  type          LessonType    @default(VIDEO)
+  status        ContentStatus @default(DRAFT)
+  order         Int           @default(0)
+  isFree        Boolean       @default(true)
+  tags          String[]
+  seoTitle      String?
+  seoDesc       String?
+  viewCount     Int           @default(0)
+  likeCount     Int           @default(0)
+  commentCount  Int           @default(0)
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  progress   Progress[]
+  bookmarks  Bookmark[]
+  comments   Comment[]
+  likes      Like[]
+
+}
+
+model Video {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  description   String?
+  categoryId    String
+  category      Category      @relation(fields: [categoryId], references: [id])
+  url           String
+  thumbnail     String?
+  duration      Int?
+  transcript    String?
+  notes         String?
+  status        ContentStatus @default(DRAFT)
+  order         Int           @default(0)
+  isFree        Boolean       @default(true)
+  tags          String[]
+  viewCount     Int           @default(0)
+  likeCount     Int           @default(0)
+  commentCount  Int           @default(0)
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  bookmarks  Bookmark[]
+  comments   Comment[]
+  likes      Like[]
+}
+
+model Quiz {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  description   String?
+  categoryId    String
+  category      Category      @relation(fields: [categoryId], references: [id])
+  image         String?
+  type          QuizType      @default(MULTIPLE_CHOICE)
+  difficulty    Difficulty    @default(BEGINNER)
+  status        ContentStatus @default(DRAFT)
+  timeLimit     Int?
+  passingScore  Int           @default(60)
+  maxAttempts   Int           @default(3)
+  questions     Question[]
+  isFree        Boolean       @default(true)
+  tags          String[]
+  viewCount     Int           @default(0)
+  likeCount     Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  progress   QuizProgress[]
+  bookmarks  Bookmark[]
+  likes      Like[]
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  quizId    String
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  text      String
+  image     String?
+  options   String[]
+  correctAnswer String
+  order     Int      @default(0)
+  points    Int      @default(10)
+  hint      String?
+  explanation String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Flashcard {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String?
+  categoryId  String
+  category    Category      @relation(fields: [categoryId], references: [id])
+  image       String?
+  status      ContentStatus @default(DRAFT)
+  cards       FlashcardCard[]
+  isFree      Boolean       @default(true)
+  tags        String[]
+  viewCount   Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  bookmarks  Bookmark[]
+}
+
+model FlashcardCard {
+  id          String   @id @default(cuid())
+  flashcardId String
+  flashcard   Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+  front       String
+  back        String
+  image       String?
+  audio       String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Game {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  description   String?
+  categoryId    String
+  category      Category      @relation(fields: [categoryId], references: [id])
+  image         String?
+  type          GameType      @default(MEMORY)
+  difficulty    Difficulty    @default(BEGINNER)
+  status        ContentStatus @default(DRAFT)
+  config        Json?
+  isFree        Boolean       @default(true)
+  tags          String[]
+  viewCount     Int           @default(0)
+  likeCount     Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  bookmarks  Bookmark[]
+  likes      Like[]
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String?
+  lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completed Boolean  @default(false)
+  score     Int?
+  timeSpent Int?
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, lessonId])
+}
+
+model QuizProgress {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId    String
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  score     Int
+  total     Int
+  answers   Json?
+  timeSpent Int?
+  attempt   Int      @default(1)
+  passed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, quizId, attempt])
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  icon        String?
+  type        String
+  xpReward    Int      @default(0)
+  coinReward  Int      @default(0)
+  starsReward Int      @default(0)
+  requirement Int?
+  criteria    Json?
+  isHidden    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users UserAchievement[]
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  progress      Int      @default(0)
+  unlockedAt    DateTime @default(now())
+  notified      Boolean  @default(false)
+
+  @@unique([userId, achievementId])
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  image       String?
+  type        String
+  categoryId  String?
+  issuedAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String?
+  lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  videoId   String?
+  video     Video?   @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  quizId    String?
+  quiz      Quiz?    @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  gameId    String?
+  game      Game?    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  flashcardId String?
+  flashcard Flashcard? @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, lessonId])
+  @@unique([userId, videoId])
+  @@unique([userId, quizId])
+  @@unique([userId, gameId])
+  @@unique([userId, flashcardId])
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String?
+  lesson    Lesson?   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  videoId   String?
+  video     Video?    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  content   String
+  parentId  String?
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentReplies")
+  likes     Int       @default(0)
+  isApproved Boolean  @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String?
+  lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  videoId   String?
+  video     Video?   @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  quizId    String?
+  quiz      Quiz?    @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  gameId    String?
+  game      Game?    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, lessonId])
+  @@unique([userId, videoId])
+  @@unique([userId, quizId])
+  @@unique([userId, gameId])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String?
+  type      String
+  link      String?
+  read      Boolean   @default(false)
+  createdAt DateTime  @default(now())
+}
+
+model Blog {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  excerpt     String?
+  content     String?
+  image       String?
+  author      String?
+  category    String?
+  tags        String[]
+  status      ContentStatus @default(DRAFT)
+  seoTitle    String?
+  seoDesc     String?
+  viewCount   Int           @default(0)
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  title     String?
+  referrer  String?
+  userAgent String?
+  ip        String?
+  country   String?
+  city      String?
+  duration  Int?
+  userId    String?
+  createdAt DateTime @default(now())
+}
+
+model SearchQuery {
+  id        String   @id @default(cuid())
+  query     String
+  userId    String?
+  results   Int?
+  createdAt DateTime @default(now())
+}
+
+model AdPlacement {
+  id        String   @id @default(cuid())
+  name      String
+  position  String
+  code      String?
+  image     String?
+  link      String?
+  isActive  Boolean  @default(true)
+  startDate DateTime?
+  endDate   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
