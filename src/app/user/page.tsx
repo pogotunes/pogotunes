@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { staggerContainer, fadeInUp } from '@/animations'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
@@ -8,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useAuthStore } from '@/store/auth-store'
+import { Spinner } from '@/components/ui/spinner'
 import {
   BookOpen, Award, Zap, Star, TrendingUp,
   Clock, Target, Trophy, Sparkles, Gamepad2,
@@ -16,31 +18,66 @@ import {
 import Link from 'next/link'
 import { format } from 'date-fns'
 
+interface ComputedStats {
+  lessonsCompleted: number
+  quizScore: number
+  quizTotal: number
+  totalPoints: number
+  achievements: number
+}
+
 export default function UserProfilePage() {
   const user = useAuthStore((state) => state.user)
   const profile = user?.profile
-  const settings = user?.settings
+  const [computedStats, setComputedStats] = useState<ComputedStats | null>(null)
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/progress').then(r => r.json()),
+      fetch('/api/achievements/user').then(r => r.json()),
+    ])
+      .then(([progressRes, achievementsRes]) => {
+        const progress = progressRes.success ? progressRes.data : []
+        const achievements = achievementsRes.success ? achievementsRes.data : []
+        const completed = progress.filter((p: any) => p.completed)
+        setComputedStats({
+          lessonsCompleted: completed.length,
+          quizScore: progress.reduce((sum: number, p: any) => sum + (p.score || 0), 0),
+          quizTotal: progress.length,
+          totalPoints: progress.reduce((sum: number, p: any) => sum + (p.score || 0), 0),
+          achievements: achievements.length,
+        })
+      })
+      .catch(() => {})
+  }, [])
+
+  const cs = computedStats
+  const lessonsDone = cs?.lessonsCompleted ?? 0
+  const totalPoints = cs?.totalPoints ?? 0
+  const accuracy = cs && cs.quizTotal > 0 ? Math.round((cs.quizScore / cs.quizTotal) * 100) : 0
+  const xp = profile?.xp ?? totalPoints
+  const level = Math.floor(xp / 100) + 1
 
   const stats = [
-    { label: 'Lessons', value: profile?.totalLessons ?? 0, icon: BookOpen, color: 'from-coral to-coral-light' },
-    { label: 'Quizzes', value: profile?.totalQuizzes ?? 0, icon: Brain, color: 'from-purple to-purple-light' },
-    { label: 'Games', value: profile?.totalGames ?? 0, icon: Gamepad2, color: 'from-yellow to-yellow-light' },
-    { label: 'Videos', value: profile?.totalVideos ?? 0, icon: Video, color: 'from-sky-blue to-sky-blue-light' },
-    { label: 'XP Total', value: profile?.totalPoints ?? 0, icon: Zap, color: 'from-green to-green-light' },
-    { label: 'Accuracy', value: `${profile?.accuracy ?? 0}%`, icon: Target, color: 'from-coral to-purple' },
+    { label: 'Lessons', value: lessonsDone, icon: BookOpen, color: 'from-coral to-coral-light' },
+    { label: 'Quizzes', value: cs?.quizTotal ?? 0, icon: Brain, color: 'from-purple to-purple-light' },
+    { label: 'Games', value: 0, icon: Gamepad2, color: 'from-yellow to-yellow-light' },
+    { label: 'Videos', value: 0, icon: Video, color: 'from-sky-blue to-sky-blue-light' },
+    { label: 'XP Total', value: totalPoints, icon: Zap, color: 'from-green to-green-light' },
+    { label: 'Accuracy', value: `${accuracy}%`, icon: Target, color: 'from-coral to-purple' },
   ]
 
   const levelInfo = {
-    level: profile?.level ?? 1,
-    xp: profile?.xp ?? 0,
-    title: profile?.level && profile.level <= 5 ? 'Beginner'
-      : profile?.level && profile.level <= 10 ? 'Curious Mind'
-      : profile?.level && profile.level <= 15 ? 'Eager Learner'
-      : profile?.level && profile.level <= 20 ? 'Knowledge Builder'
-      : profile?.level && profile.level <= 25 ? 'Smart Thinker'
-      : profile?.level && profile.level <= 30 ? 'Rising Star'
-      : profile?.level && profile.level <= 35 ? 'Bright Spark'
-      : profile?.level && profile.level <= 40 ? 'Wise Owl'
+    level,
+    xp,
+    title: level <= 5 ? 'Beginner'
+      : level <= 10 ? 'Curious Mind'
+      : level <= 15 ? 'Eager Learner'
+      : level <= 20 ? 'Knowledge Builder'
+      : level <= 25 ? 'Smart Thinker'
+      : level <= 30 ? 'Rising Star'
+      : level <= 35 ? 'Bright Spark'
+      : level <= 40 ? 'Wise Owl'
       : 'Knowledge Master',
   }
 
@@ -152,10 +189,10 @@ export default function UserProfilePage() {
                   </div>
                   <div>
                     <div className="text-sm font-baloo font-bold text-white">Total Lessons</div>
-                    <div className="text-xs text-white/40 font-nunito">{profile?.totalLessons ?? 0} completed</div>
+                    <div className="text-xs text-white/40 font-nunito">{lessonsDone} completed</div>
                   </div>
                 </div>
-                <div className="text-2xl font-baloo font-bold text-white">{profile?.totalLessons ?? 0}</div>
+                <div className="text-2xl font-baloo font-bold text-white">{lessonsDone}</div>
               </div>
               <div className="flex items-center justify-between p-4 rounded-xl bg-white/5">
                 <div className="flex items-center gap-3">
@@ -164,10 +201,10 @@ export default function UserProfilePage() {
                   </div>
                   <div>
                     <div className="text-sm font-baloo font-bold text-white">Total Points</div>
-                    <div className="text-xs text-white/40 font-nunito">{profile?.totalPoints ?? 0} XP earned</div>
+                    <div className="text-xs text-white/40 font-nunito">{totalPoints} XP earned</div>
                   </div>
                 </div>
-                <div className="text-2xl font-baloo font-bold text-white">{profile?.totalPoints ?? 0}</div>
+                <div className="text-2xl font-baloo font-bold text-white">{totalPoints}</div>
               </div>
               <div className="flex items-center justify-between p-4 rounded-xl bg-white/5">
                 <div className="flex items-center gap-3">
@@ -179,7 +216,7 @@ export default function UserProfilePage() {
                     <div className="text-xs text-white/40 font-nunito">Across all quizzes & games</div>
                   </div>
                 </div>
-                <div className="text-2xl font-baloo font-bold text-white">{profile?.accuracy ?? 0}%</div>
+                <div className="text-2xl font-baloo font-bold text-white">{accuracy}%</div>
               </div>
             </CardContent>
             <CardFooter>

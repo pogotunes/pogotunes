@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { staggerContainer, fadeInUp } from '@/animations'
 import { Card } from '@/components/ui/card'
@@ -8,12 +9,39 @@ import Link from 'next/link'
 
 const quickActions = [
   { label: 'Browse Categories', href: '/categories', emoji: '📚' },
-  { label: 'Continue Learning', href: '/lessons', emoji: '📖' },
+  { label: 'Continue Learning', href: '/learn', emoji: '📖' },
   { label: 'Play Games', href: '/games', emoji: '🎮' },
-  { label: 'Take a Quiz', href: '/quiz', emoji: '🧠' },
+  { label: 'Take a Quiz', href: '/quizzes', emoji: '🧠' },
 ]
 
+interface DashboardStats {
+  lessonsDone: number
+  totalPoints: number
+  achievements: number
+  streak: number
+}
+
 export default function DashboardPage() {
+  const [stats, setStats] = useState<DashboardStats>({ lessonsDone: 0, totalPoints: 0, achievements: 0, streak: 0 })
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/progress').then(r => r.json()),
+      fetch('/api/achievements/user').then(r => r.json()),
+    ])
+      .then(([progressRes, achievementsRes]) => {
+        const progress = progressRes.success ? progressRes.data : []
+        const achievements = achievementsRes.success ? achievementsRes.data : []
+        setStats({
+          lessonsDone: progress.filter((p: any) => p.completed).length,
+          totalPoints: progress.reduce((sum: number, p: any) => sum + (p.score || 0), 0),
+          achievements: achievements.length,
+          streak: 0,
+        })
+      })
+      .catch(() => {})
+  }, [])
+
   return (
     <div className="min-h-screen">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -39,10 +67,10 @@ export default function DashboardPage() {
 
           <motion.div variants={fadeInUp} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: 'Lessons Done', value: '0', color: 'from-coral to-coral-light' },
-              { label: 'Days Streak', value: '0', color: 'from-yellow to-yellow-light' },
-              { label: 'Total Points', value: '0', color: 'from-sky-blue to-sky-blue-light' },
-              { label: 'Achievements', value: '0', color: 'from-green to-green-light' },
+              { label: 'Lessons Done', value: String(stats.lessonsDone), color: 'from-coral to-coral-light' },
+              { label: 'Days Streak', value: String(stats.streak), color: 'from-yellow to-yellow-light' },
+              { label: 'Total Points', value: String(stats.totalPoints), color: 'from-sky-blue to-sky-blue-light' },
+              { label: 'Achievements', value: String(stats.achievements), color: 'from-green to-green-light' },
             ].map((stat) => (
               <Card key={stat.label} variant="glass" className="p-5 text-center">
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mx-auto mb-3`}>

@@ -1,5 +1,5 @@
 export const SITE_NAME = 'Pogo Tunes'
-export const SITE_DESCRIPTION = 'World\'s best educational platform for kids'
+export const SITE_DESCRIPTION = 'Fun learning songs, videos, and activities for toddlers and young children — alphabets, numbers, colors, phonics, Hindi, and more!'
 export const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 export const SITE_LOGO = '/images/logo.svg'
 
@@ -32,6 +32,9 @@ export const CATEGORIES = [
   { name: 'Emotions', slug: 'emotions', icon: 'smile', color: '#FF6B6B' },
   { name: 'Life Skills', slug: 'life-skills', icon: 'sparkles', color: '#6BCBFF' },
   { name: 'Foreign Languages', slug: 'foreign-languages', icon: 'globe-2', color: '#51CF66' },
+  { name: 'Hindi', slug: 'hindi', icon: 'languages', color: '#FF6B6B' },
+  { name: 'Fruits', slug: 'fruits', icon: 'apple', color: '#51CF66' },
+  { name: 'Vegetables', slug: 'vegetables', icon: 'sprout', color: '#6BCBFF' },
   { name: 'Environment', slug: 'environment', icon: 'leaf', color: '#6C63FF' },
   { name: 'Technology', slug: 'technology', icon: 'monitor', color: '#FFD93D' },
   { name: 'Critical Thinking', slug: 'critical-thinking', icon: 'lightbulb', color: '#FF6B6B' },

@@ -110,6 +110,17 @@ const CODING_LESSONS = [
   { title: "Conditional Statements", slug: "conditional-statements", type: "QUIZ", difficulty: "MEDIUM", content: "Use if-then logic to make decisions." },
 ]
 
+const HINDI_LESSONS = [
+  { title: "Hindi Swar (Vowels)", slug: "hindi-swar", type: "VIDEO", difficulty: "BEGINNER", content: "Learn the Hindi vowels - अ, आ, इ, ई, उ, ऊ, ए, ऐ, ओ, औ" },
+  { title: "Hindi Vyanjan (Consonants)", slug: "hindi-vyanjan", type: "VIDEO", difficulty: "BEGINNER", content: "Learn the Hindi consonants - क, ख, ग, घ, ङ and more!" },
+  { title: "Counting in Hindi 1-10", slug: "hindi-counting-1-10", type: "PRACTICE", difficulty: "BEGINNER", content: "Count from 1 to 10 in Hindi - एक, दो, तीन, चार, पाँच..." },
+  { title: "Colors in Hindi", slug: "hindi-colors", type: "FLASHCARD", difficulty: "BEGINNER", content: "Learn color names in Hindi - लाल, नीला, हरा, पीला..." },
+  { title: "Animals in Hindi", slug: "hindi-animals", type: "GAME", difficulty: "EASY", content: "Learn animal names in Hindi - कुत्ता, बिल्ली, हाथी..." },
+  { title: "Hindi Rhymes", slug: "hindi-rhymes", type: "VIDEO", difficulty: "BEGINNER", content: "Sing along to popular Hindi nursery rhymes and poems!" },
+  { title: "Body Parts in Hindi", slug: "hindi-body-parts", type: "QUIZ", difficulty: "EASY", content: "Learn body part names in Hindi - सिर, आँख, नाक, कान..." },
+  { title: "Days of Week in Hindi", slug: "hindi-days-week", type: "ARTICLE", difficulty: "EASY", content: "Learn the days of the week in Hindi - सोमवार, मंगलवार..." },
+]
+
 const VIDEOS_DATA: Record<string, Array<{ title: string; slug: string; url: string; description: string; duration: number; transcript?: string }>> = {
   mathematics: [
     { title: "Counting Fun 1-100", slug: "counting-fun", url: "https://www.youtube.com/watch?v=example1", description: "A fun counting video for kids", duration: 300, transcript: "Let's count together! One, two, three..." },
@@ -134,6 +145,10 @@ const VIDEOS_DATA: Record<string, Array<{ title: string; slug: string; url: stri
   history: [
     { title: "Ancient Egypt", slug: "ancient-egypt", url: "https://www.youtube.com/watch?v=example11", description: "Pyramids, pharaohs, and the Nile", duration: 480, transcript: "Ancient Egypt was one of the world's first civilizations..." },
     { title: "Knights and Castles", slug: "knights-castles", url: "https://www.youtube.com/watch?v=example12", description: "Life in medieval times", duration: 420 },
+  ],
+  hindi: [
+    { title: "Hindi Swar Geet", slug: "hindi-swar-geet", url: "https://www.youtube.com/watch?v=hindiswar", description: "Sing along to the Hindi vowels song!", duration: 180, transcript: "अ से अनार, आ से आम..." },
+    { title: "Hindi Vyanjan Song", slug: "hindi-vyanjan-song", url: "https://www.youtube.com/watch?v=hindivyanjan", description: "Learn Hindi consonants with fun animations", duration: 240, transcript: "क से कबूतर, ख से खरगोश..." },
   ],
 }
 
@@ -210,6 +225,13 @@ const QUIZZES_DATA: Record<string, Array<{ title: string; slug: string; type: st
         { text: "Which is a programming language?", options: ["English", "Spanish", "Python", "French"], correctAnswer: "Python", order: 2, points: 10 },
       ],
     },
+  ],
+  hindi: [
+    { title: "Hindi Body Parts", slug: "hindi-body-parts-quiz", type: "MULTIPLE_CHOICE", description: "Test your knowledge of body parts in Hindi!", timeLimit: 60, passingScore: 60, questions: [
+      { text: "What is 'head' called in Hindi?", options: ["सिर", "हाथ", "पैर", "आँख"], correctAnswer: "सिर", order: 0, points: 10 },
+      { text: "What is 'eyes' called in Hindi?", options: ["कान", "आँख", "नाक", "मुँह"], correctAnswer: "आँख", order: 1, points: 10 },
+      { text: "What is 'nose' called in Hindi?", options: ["हाथ", "पैर", "नाक", "दाँत"], correctAnswer: "नाक", order: 2, points: 10 },
+    ]},
   ],
 }
 
@@ -301,6 +323,16 @@ const FLASHCARDS_DATA: Record<string, Array<{ title: string; slug: string; descr
         { front: "What month has 28 days?", back: "All of them", order: 5 },
       ],
     },
+  ],
+  hindi: [
+    { title: "Hindi Colors", slug: "hindi-colors-flashcards", description: "Learn color names in Hindi!", cards: [
+      { front: "Red", back: "लाल (Laal)", order: 0 },
+      { front: "Blue", back: "नीला (Neela)", order: 1 },
+      { front: "Green", back: "हरा (Hara)", order: 2 },
+      { front: "Yellow", back: "पीला (Peela)", order: 3 },
+      { front: "Black", back: "काला (Kaala)", order: 4 },
+      { front: "White", back: "सफेद (Safed)", order: 5 },
+    ]},
   ],
 }
 
@@ -468,6 +500,7 @@ async function main() {
     science: SCIENCE_LESSONS,
     reading: READING_LESSONS,
     coding: CODING_LESSONS,
+    hindi: HINDI_LESSONS,
   }
 
   let lessonCount = 0

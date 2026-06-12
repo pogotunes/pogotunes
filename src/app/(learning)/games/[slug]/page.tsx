@@ -4,19 +4,14 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Gamepad2, Star, Heart, Zap, Sparkles, RefreshCw } from 'lucide-react'
-import { CATEGORIES } from '@/lib/constants'
 import { fadeInUp } from '@/animations'
 import { Breadcrumb } from '@/components/learning/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-
-const gameData = {
-  title: 'Memory Match',
-  description: 'Flip cards and find matching pairs! Test your memory skills.',
-}
 
 const emojis = ['🐶', '🐱', '🐼', '🦊', '🐸', '🦋', '🐙', '🦄']
 
@@ -39,6 +34,9 @@ interface MemoryCard {
 export default function GamePage() {
   const params = useParams()
   const slug = params.slug as string
+  const [gameTitle, setGameTitle] = useState('Memory Match')
+  const [gameDesc, setGameDesc] = useState('Flip cards and find matching pairs! Test your memory skills.')
+  const [loading, setLoading] = useState(true)
   const [cards, setCards] = useState<MemoryCard[]>([])
   const [flippedIds, setFlippedIds] = useState<number[]>([])
   const [matchedPairs, setMatchedPairs] = useState(0)
@@ -48,6 +46,19 @@ export default function GamePage() {
   const [gameStarted, setGameStarted] = useState(false)
   const [gameComplete, setGameComplete] = useState(false)
   const [lives, setLives] = useState(3)
+
+  useEffect(() => {
+    fetch(`/api/games/${slug}`)
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success) {
+          setGameTitle(res.data.title || 'Memory Match')
+          setGameDesc(res.data.description || '')
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [slug])
 
   const initGame = useCallback(() => {
     const pairs = shuffleArray(emojis).slice(0, 6)
@@ -126,8 +137,15 @@ export default function GamePage() {
     setFlippedIds((prev) => [...prev, id])
   }
 
-  const category = CATEGORIES.find((c) => c.slug === slug) ?? CATEGORIES[0]
-  const accentColor = category?.color ?? '#6BCBFF'
+  const accentColor = '#6BCBFF'
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner size="lg" label="Loading game..." />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen">
@@ -144,9 +162,8 @@ export default function GamePage() {
         <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
           <Breadcrumb
             items={[
-              { label: 'Categories', href: '/categories' },
               { label: 'Games', href: '/games' },
-              { label: gameData.title },
+              { label: gameTitle },
             ]}
             className="mb-8"
           />
@@ -161,8 +178,8 @@ export default function GamePage() {
                   <Gamepad2 className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-baloo font-bold text-white">{gameData.title}</h1>
-                  <p className="text-sm text-white/50 font-nunito">{gameData.description}</p>
+                  <h1 className="text-xl font-baloo font-bold text-white">{gameTitle}</h1>
+                  <p className="text-sm text-white/50 font-nunito">{gameDesc}</p>
                 </div>
               </div>
 
@@ -229,8 +246,8 @@ export default function GamePage() {
                 </p>
                 <p className="text-3xl font-baloo font-bold text-white mb-6">{score} points</p>
                 <div className="flex items-center justify-center gap-3">
-                  <Link href={`/categories/${slug}`}>
-                    <Button variant="glass">Back</Button>
+                  <Link href="/games">
+                    <Button variant="glass">Back to Games</Button>
                   </Link>
                   <Button
                     variant="coral"

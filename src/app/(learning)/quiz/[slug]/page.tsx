@@ -1,10 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Brain, Star, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
-import { CATEGORIES } from '@/lib/constants'
+import { Brain, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
 import { staggerContainer, fadeInUp, fadeInLeft } from '@/animations'
 import { Breadcrumb } from '@/components/learning/breadcrumb'
 import { QuizTimer } from '@/components/quiz/quiz-timer'
@@ -12,61 +11,75 @@ import { MultipleChoice } from '@/components/quiz/multiple-choice'
 import { TrueFalse } from '@/components/quiz/true-false'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
-const mockQuestions = [
-  {
-    id: 'q1',
-    text: 'What is 2 + 3?',
-    options: ['4', '5', '6', '7'],
-    correctAnswer: '5',
-    explanation: '2 + 3 equals 5. When you add two and three together, you get five!',
-    points: 10,
-    hint: 'Count on your fingers: 1, 2, then 3 more makes...',
-  },
-  {
-    id: 'q2',
-    text: 'The Earth is flat.',
-    options: ['true', 'false'],
-    correctAnswer: 'false',
-    explanation: 'The Earth is actually round like a ball! Scientists have proven this with photos from space.',
-    points: 10,
-  },
-  {
-    id: 'q3',
-    text: 'Which color do you get by mixing red and blue?',
-    options: ['Green', 'Orange', 'Purple', 'Yellow'],
-    correctAnswer: 'Purple',
-    explanation: 'Red and blue make purple! It\'s one of the secondary colors.',
-    points: 15,
-  },
-  {
-    id: 'q4',
-    text: 'Water freezes at 0 degrees Celsius.',
-    options: ['true', 'false'],
-    correctAnswer: 'true',
-    explanation: 'Yes! Water turns into ice when it gets cold enough (0°C or 32°F).',
-    points: 10,
-  },
-]
+interface Question {
+  id: string
+  text: string
+  options: string[]
+  correctAnswer: string
+  explanation?: string
+  points: number
+  hint?: string
+}
 
 export default function QuizPage() {
   const params = useParams()
   const slug = params.slug as string
+  const [questions, setQuestions] = useState<Question[]>([])
+  const [quizTitle, setQuizTitle] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [showResults, setShowResults] = useState(false)
   const [timeUp, setTimeUp] = useState(false)
 
-  const question = mockQuestions[currentQuestion]
-  const isLastQuestion = currentQuestion === mockQuestions.length - 1
-  const progress = ((currentQuestion + 1) / mockQuestions.length) * 100
+  useEffect(() => {
+    fetch(`/api/quizzes/${slug}`)
+      .then((r) => r.json())
+      .then((res) => {
+        if (!res.success) {
+          setError(res.error || 'Quiz not found')
+          return
+        }
+        setQuizTitle(res.data.title || 'Knowledge Challenge')
+        setQuestions(res.data.questions || [])
+      })
+      .catch(() => setError('Failed to load quiz'))
+      .finally(() => setLoading(false))
+  }, [slug])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner size="lg" label="Loading quiz..." />
+      </div>
+    )
+  }
+
+  if (error || questions.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+        <span className="text-6xl">🧠</span>
+        <h1 className="text-2xl font-baloo font-bold text-white">{error || 'Quiz not found'}</h1>
+        <Link href="/quizzes">
+          <Button variant="coral">Browse Quizzes</Button>
+        </Link>
+      </div>
+    )
+  }
+
+  const question = questions[currentQuestion]
+  const isLastQuestion = currentQuestion === questions.length - 1
+  const progress = ((currentQuestion + 1) / questions.length) * 100
   const score = Object.entries(answers).reduce((acc, [qId, answer]) => {
-    const q = mockQuestions.find((mq) => mq.id === qId)
+    const q = questions.find((mq) => mq.id === qId)
     return acc + (q?.correctAnswer === answer ? (q?.points ?? 10) : 0)
   }, 0)
-  const maxScore = mockQuestions.reduce((acc, q) => acc + (q.points ?? 10), 0)
+  const maxScore = questions.reduce((acc, q) => acc + (q.points ?? 10), 0)
 
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: answer }))
@@ -81,10 +94,7 @@ export default function QuizPage() {
   }
 
   const completedCount = Object.keys(answers).length
-  const allAnswered = completedCount === mockQuestions.length
-
-  const category = CATEGORIES[0]
-  const accentColor = category?.color ?? '#6BCBFF'
+  const accentColor = '#6BCBFF'
 
   if (showResults || timeUp) {
     const percentage = Math.round((score / maxScore) * 100)
@@ -133,8 +143,8 @@ export default function QuizPage() {
           </Card>
 
           <div className="flex items-center justify-center gap-3">
-            <Link href={`/categories/${slug}`}>
-              <Button variant="glass">Back to Category</Button>
+            <Link href="/quizzes">
+              <Button variant="glass">Back to Quizzes</Button>
             </Link>
             <Button
               variant="coral"
@@ -169,9 +179,8 @@ export default function QuizPage() {
         <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
           <Breadcrumb
             items={[
-              { label: 'Categories', href: '/categories' },
-              { label: 'Quiz', href: `/categories/${slug}` },
-              { label: 'Knowledge Challenge' },
+              { label: 'Quizzes', href: '/quizzes' },
+              { label: quizTitle },
             ]}
             className="mb-8"
           />
@@ -193,9 +202,9 @@ export default function QuizPage() {
                   <Brain className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-baloo font-bold text-white">Knowledge Challenge</h1>
+                  <h1 className="text-xl font-baloo font-bold text-white">{quizTitle}</h1>
                   <p className="text-sm text-white/50 font-nunito">
-                    Question {currentQuestion + 1} of {mockQuestions.length}
+                    Question {currentQuestion + 1} of {questions.length}
                   </p>
                 </div>
               </div>
@@ -225,14 +234,14 @@ export default function QuizPage() {
                   question={question}
                   onAnswer={handleAnswer}
                   questionNumber={currentQuestion + 1}
-                  totalQuestions={mockQuestions.length}
+                  totalQuestions={questions.length}
                 />
               ) : (
                 <MultipleChoice
                   question={question}
                   onAnswer={handleAnswer}
                   questionNumber={currentQuestion + 1}
-                  totalQuestions={mockQuestions.length}
+                  totalQuestions={questions.length}
                   timeLimit={120}
                 />
               )}

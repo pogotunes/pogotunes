@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
@@ -18,32 +18,9 @@ import { Breadcrumb } from '@/components/learning/breadcrumb'
 import { CategoryCard } from '@/components/learning/category-card'
 import { LessonCard } from '@/components/learning/lesson-card'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-
-function getMockLessons(categoryName: string, categorySlug: string, categoryIcon?: string, categoryColor?: string): Lesson[] {
-  return Array.from({ length: 12 }, (_, i) => ({
-    id: `lesson-${i + 1}`,
-    title: `Lesson ${i + 1}: ${['Introduction', 'Basics', 'Practice', 'Advanced', 'Review', 'Challenge', 'Fun Activity', 'Quiz Prep', 'Deep Dive', 'Mastery', 'Creative Project', 'Final Test'][i]}`,
-    slug: `lesson-${i + 1}`,
-    description: 'Learn through interactive activities and fun challenges designed for young minds.',
-    categoryId: 'cat-1',
-    category: { id: 'cat-1', name: categoryName, slug: categorySlug, icon: categoryIcon, color: categoryColor, order: 0, children: [], isActive: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-    duration: (i + 1) * 5 + 5,
-    difficulty: (['BEGINNER', 'BEGINNER', 'EASY', 'EASY', 'MEDIUM', 'MEDIUM', 'HARD', 'HARD', 'EXPERT', 'EXPERT', 'BEGINNER', 'MEDIUM'] as const)[i],
-    type: (['VIDEO', 'ARTICLE', 'QUIZ', 'GAME', 'FLASHCARD', 'PRACTICE', 'VIDEO', 'ARTICLE', 'QUIZ', 'GAME', 'FLASHCARD', 'PRACTICE'] as const)[i],
-    status: 'PUBLISHED' as const,
-    order: i + 1,
-    isFree: true,
-    tags: [],
-    viewCount: Math.floor(Math.random() * 1000),
-    likeCount: Math.floor(Math.random() * 100),
-    commentCount: Math.floor(Math.random() * 20),
-    publishedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  }))
-}
 
 const sectionIcons = {
   VIDEO: Video,
@@ -63,20 +40,52 @@ const sectionLabels: Record<string, string> = {
   PRACTICE: 'Practice',
 }
 
+interface CategoryData {
+  name: string
+  slug: string
+  icon?: string
+  color?: string
+  lessons: Lesson[]
+  quizzes: any[]
+  games: any[]
+  videos: any[]
+  flashcards: any[]
+}
+
 export default function CategoryPage() {
   const params = useParams()
   const slug = params.slug as string
+  const [category, setCategory] = useState<CategoryData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const category = useMemo(
-    () => CATEGORIES.find((c) => c.slug === slug),
-    [slug]
-  )
+  useEffect(() => {
+    fetch(`/api/categories/${slug}`)
+      .then((r) => r.json())
+      .then((res) => {
+        if (!res.success) {
+          setError(res.error || 'Category not found')
+          return
+        }
+        setCategory(res.data)
+      })
+      .catch(() => setError('Failed to load category'))
+      .finally(() => setLoading(false))
+  }, [slug])
 
-  if (!category) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner size="lg" label="Loading category..." />
+      </div>
+    )
+  }
+
+  if (error || !category) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <span className="text-6xl">🔍</span>
-        <h1 className="text-2xl font-baloo font-bold text-white">Category not found</h1>
+        <h1 className="text-2xl font-baloo font-bold text-white">{error || 'Category not found'}</h1>
         <p className="text-white/60 font-nunito">The category you&apos;re looking for doesn&apos;t exist.</p>
         <Link href="/categories">
           <Button variant="coral">Browse Categories</Button>
@@ -85,34 +94,39 @@ export default function CategoryPage() {
     )
   }
 
-  const mockLessons = useMemo(
-    () => getMockLessons(category.name, category.slug, category.icon, category.color),
-    [category]
-  )
+  const accentColor = category.color || '#6BCBFF'
 
   const groupedLessons = LESSON_TYPES.map((type) => ({
     type,
     label: sectionLabels[type],
     Icon: sectionIcons[type],
-    lessons: mockLessons.filter((l) => l.type === type),
-  }))
+    items: [
+      ...(type === 'VIDEO' ? (category.videos || []) : []),
+      ...(type === 'QUIZ' ? (category.quizzes || []) : []),
+      ...(type === 'GAME' ? (category.games || []) : []),
+      ...(type === 'FLASHCARD' ? (category.flashcards || []) : []),
+      ...(type === 'ARTICLE' || type === 'PRACTICE'
+        ? (category.lessons || []).filter((l) => l.type === type)
+        : []),
+    ],
+  })).filter((g) => g.items.length > 0)
 
   return (
     <div className="min-h-screen">
       <div
         className="relative overflow-hidden pb-16"
         style={{
-          background: `linear-gradient(180deg, ${category.color}20 0%, transparent 100%)`,
+          background: `linear-gradient(180deg, ${accentColor}20 0%, transparent 100%)`,
         }}
       >
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
             className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-20 blur-3xl"
-            style={{ background: category.color }}
+            style={{ background: accentColor }}
           />
           <div
             className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full opacity-10 blur-3xl"
-            style={{ background: category.color }}
+            style={{ background: accentColor }}
           />
         </div>
 
@@ -140,8 +154,14 @@ export default function CategoryPage() {
               </p>
             </motion.div>
 
-            {groupedLessons.map(({ type, label, Icon, lessons }) =>
-              lessons.length > 0 ? (
+            {groupedLessons.length === 0 && (
+              <motion.div variants={fadeInUp} className="text-center">
+                <p className="text-white/40 font-nunito">No content available in this category yet.</p>
+              </motion.div>
+            )}
+
+            {groupedLessons.map(({ type, label, Icon, items }) =>
+              items.length > 0 ? (
                 <motion.section key={type} variants={fadeInUp}>
                   <div className="flex items-center gap-3 mb-6">
                     <div
@@ -150,7 +170,7 @@ export default function CategoryPage() {
                         'bg-gradient-to-br opacity-90'
                       )}
                       style={{
-                        background: `linear-gradient(135deg, ${category.color}, ${category.color}88)`,
+                        background: `linear-gradient(135deg, ${accentColor}, ${accentColor}88)`,
                       }}
                     >
                       <Icon className="w-5 h-5 text-white" />
@@ -159,13 +179,44 @@ export default function CategoryPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {lessons.slice(0, 4).map((lesson) => (
-                      <LessonCard
-                        key={lesson.id}
-                        lesson={lesson}
-                        progress={Math.random() > 0.5 ? Math.floor(Math.random() * 100) : 0}
-                      />
-                    ))}
+                    {items.slice(0, 4).map((item: any) => {
+                      const itemSlug = item.slug || ''
+                      const href =
+                        type === 'VIDEO' ? `/videos/${itemSlug}` :
+                        type === 'QUIZ' ? `/quiz/${itemSlug}` :
+                        type === 'GAME' ? `/games/${itemSlug}` :
+                        type === 'FLASHCARD' ? `/flashcards/${itemSlug}` :
+                        `/lessons/${itemSlug}`
+
+                      return (
+                        <Link key={item.id} href={href}>
+                          <LessonCard
+                            lesson={{
+                              id: item.id,
+                              title: item.title,
+                              slug: itemSlug,
+                              description: item.description || '',
+                              categoryId: category.slug,
+                              category: { id: category.slug, name: category.name, slug: category.slug, icon: category.icon || '', color: accentColor, order: 0, children: [], isActive: true, createdAt: '', updatedAt: '' },
+                              duration: item.duration || 0,
+                              difficulty: item.difficulty || 'BEGINNER',
+                              type: item.type || type,
+                              status: 'PUBLISHED',
+                              order: item.order || 0,
+                              isFree: true,
+                              tags: item.tags || [],
+                              viewCount: item.viewCount || 0,
+                              likeCount: item.likeCount || 0,
+                              commentCount: item.commentCount || 0,
+                              publishedAt: item.publishedAt || new Date().toISOString(),
+                              createdAt: item.createdAt || new Date().toISOString(),
+                              updatedAt: item.updatedAt || new Date().toISOString(),
+                            }}
+                            progress={Math.random() > 0.5 ? Math.floor(Math.random() * 100) : 0}
+                          />
+                        </Link>
+                      )
+                    })}
                   </div>
                 </motion.section>
               ) : null

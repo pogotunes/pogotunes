@@ -1,23 +1,36 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { staggerContainer, fadeInUp } from '@/animations'
 import { Breadcrumb } from '@/components/learning/breadcrumb'
 import { Card } from '@/components/ui/card'
+import { Spinner } from '@/components/ui/spinner'
 import { Trophy, Medal, Sparkles, Timer, Star, Users } from 'lucide-react'
 
-const topUsers = [
-  { rank: 1, name: 'Alex Star', xp: 15420, level: 42, streak: 15, avatar: '⭐' },
-  { rank: 2, name: 'Maya Code', xp: 12850, level: 38, streak: 12, avatar: '🚀' },
-  { rank: 3, name: 'Leo Math', xp: 11200, level: 35, streak: 10, avatar: '💡' },
-  { rank: 4, name: 'Zara Read', xp: 9800, level: 31, streak: 8, avatar: '📚' },
-  { rank: 5, name: 'Max Explore', xp: 8750, level: 28, streak: 7, avatar: '🌍' },
-]
-
-const rankColors = ['from-yellow to-yellow-light', 'from-gray-300 to-gray-400', 'from-amber to-amber-light']
 const rankMedals = ['🥇', '🥈', '🥉']
 
+interface LeaderboardUser {
+  id: string
+  name: string
+  xp: number
+  lessonsCompleted: number
+}
+
 export default function LeaderboardPage() {
+  const [users, setUsers] = useState<LeaderboardUser[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/leaderboard')
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success) setUsers(res.data)
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
   return (
     <div className="min-h-screen">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -74,43 +87,49 @@ export default function LeaderboardPage() {
                 <h2 className="text-2xl font-baloo font-bold text-white">Top Learners</h2>
               </div>
 
-              <div className="space-y-3">
-                {topUsers.map((user) => (
-                  <div
-                    key={user.rank}
-                    className="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-                  >
-                    <div className="w-8 text-center">
-                      {user.rank <= 3 ? (
-                        <span className="text-2xl">{rankMedals[user.rank - 1]}</span>
-                      ) : (
-                        <span className="text-white/40 font-bold font-nunito">#{user.rank}</span>
-                      )}
+              {loading ? (
+                <div className="flex justify-center py-8">
+                  <Spinner label="Loading leaderboard..." />
+                </div>
+              ) : users.length === 0 ? (
+                <p className="text-white/40 text-center py-8 font-nunito">No learners yet. Start learning to be the first!</p>
+              ) : (
+                <div className="space-y-3">
+                  {users.map((user, index) => (
+                    <div
+                      key={user.id}
+                      className="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
+                    >
+                      <div className="w-8 text-center">
+                        {index < 3 ? (
+                          <span className="text-2xl">{rankMedals[index]}</span>
+                        ) : (
+                          <span className="text-white/40 font-bold font-nunito">#{index + 1}</span>
+                        )}
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-lg font-bold text-white font-baloo">
+                        {user.name[0]}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-baloo font-bold truncate">{user.name}</p>
+                        <p className="text-xs text-white/50 font-nunito">{user.lessonsCompleted} lessons completed</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-yellow font-baloo font-bold">{user.xp.toLocaleString()} XP</p>
+                      </div>
                     </div>
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-xl">
-                      {user.avatar}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white font-baloo font-bold truncate">{user.name}</p>
-                      <p className="text-xs text-white/50 font-nunito">Level {user.level}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-yellow font-baloo font-bold">{user.xp.toLocaleString()}</p>
-                      <p className="text-xs text-white/40 font-nunito">🔥 {user.streak} day streak</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </Card>
           </motion.div>
 
           <motion.div variants={fadeInUp} className="text-center">
             <Card variant="glass" className="max-w-md mx-auto">
               <Sparkles className="w-10 h-10 text-yellow mx-auto mb-3" />
-              <h3 className="text-xl font-baloo font-bold text-white mb-2">More Coming Soon!</h3>
+              <h3 className="text-xl font-baloo font-bold text-white mb-2">Complete Lessons to Climb!</h3>
               <p className="text-sm text-white/60 font-nunito">
-                We&apos;re building a full leaderboard experience with weekly challenges,
-                achievement badges, and special rewards for top learners. Stay tuned!
+                Complete lessons, ace quizzes, and play games to earn XP and climb the leaderboard.
               </p>
             </Card>
           </motion.div>
