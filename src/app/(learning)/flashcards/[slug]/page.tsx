@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, ChevronLeft, ChevronRight, Shuffle, BookOpen } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Shuffle, BookOpen, Sparkles } from 'lucide-react'
 import { CATEGORIES } from '@/lib/constants'
-import { fadeInUp, staggerItem } from '@/animations'
+import { fadeInUp } from '@/animations'
 import { Breadcrumb } from '@/components/learning/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -52,9 +52,9 @@ export default function FlashcardsPage() {
       .finally(() => setLoading(false))
   }, [slug])
 
-  const cards = shuffled && data
+  const cards = useMemo(() => shuffled && data
     ? [...data.cards].sort(() => Math.random() - 0.5)
-    : data?.cards ?? []
+    : data?.cards ?? [], [shuffled, data])
 
   const currentCard = cards[currentIndex]
   const progress = cards.length > 0 ? ((currentIndex + 1) / cards.length) * 100 : 0

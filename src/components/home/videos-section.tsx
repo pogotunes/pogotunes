@@ -3,21 +3,8 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
-import { Play, Clock, ArrowRight, Sparkles, Music, BookOpen, Palette, Globe } from 'lucide-react'
+import { Play, Clock, ArrowRight, Music } from 'lucide-react'
 import type { Video } from '@/types'
-
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
-  phonics: Music,
-  math: BookOpen,
-  art: Palette,
-  science: Globe,
-  music: Music,
-  reading: BookOpen,
-  alphabet: Music,
-  colors: Palette,
-  animals: Globe,
-  numbers: BookOpen,
-}
 
 const videoColors = ['#FF6B6B', '#FFD93D', '#6BCBFF', '#6C63FF', '#51CF66', '#FF6B6B']
 

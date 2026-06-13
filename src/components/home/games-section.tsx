@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
-import { Gamepad2, Sparkles, ArrowRight, Puzzle, Brain, Shapes, Palette, Target, Zap } from 'lucide-react'
+import { Gamepad2, ArrowRight, Puzzle, Brain, Shapes, Palette, Target, Zap } from 'lucide-react'
 import type { Game } from '@/types'
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
