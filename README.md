@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pogo Tunes 🎵
+
+Educational platform for toddlers and young children — fun learning through songs, videos, and interactive activities. Focuses on alphabets, numbers, colors, animals, phonics, Hindi learning, shapes, fruits, vegetables, and more.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **Animation:** Framer Motion
+- **Database:** PostgreSQL (Neon) + Prisma 7
+- **State:** Zustand + TanStack Query
+- **Auth:** JWT (credentials) + Social providers
+- **Icons:** Lucide React
+- **Deploy:** Netlify
+
+## Features
+
+- 32+ learning categories (Math, Science, English, Hindi, Phonics, etc.)
+- Interactive lessons with progress tracking
+- Educational videos library
+- Quizzes with multiple-choice and true/false
+- Flashcard study with flip animation
+- Memory match and other educational games
+- Gamification: XP points, levels, streaks, achievements, leaderboard
+- User authentication (email + social)
+- Parent dashboard with progress analytics
+- Blog with educational articles
+- Dark/light theme
+- Responsive design (320px–4K)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+cp .env.example .env  # Configure DATABASE_URL and JWT_SECRET
+npx prisma migrate dev
+npx tsx prisma/seed.ts  # Optional: seed sample data
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start dev server |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npx tsx prisma/seed.ts` | Seed database |
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `JWT_SECRET` | Secret key for JWT tokens |
+| `NEXT_PUBLIC_APP_URL` | Public site URL |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Auto-deploys from `main` branch to Netlify. Build command runs `prisma generate`, `prisma migrate deploy`, and `next build`.
 
-## Deploy on Vercel
+## Social
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Blog: https://pogotunes.blogspot.com
+- YouTube: @Pogotunes
+- Facebook: /pogotunes
+- Instagram: @pogo.tunes
+- Pinterest: /pogotunes
+- X (Twitter): @pogotunes

@@ -108,7 +108,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
-              The world&apos;s best educational platform for kids. Making learning fun through interactive games, videos, and quizzes.
+              Fun learning songs, videos, and activities for toddlers and young children — alphabets, numbers, colors, phonics, Hindi, and more!
             </p>
             <div className="mt-5 flex items-center gap-3 flex-wrap">
               {SOCIAL_LINKS.map((social) => {

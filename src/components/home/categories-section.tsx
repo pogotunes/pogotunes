@@ -152,7 +152,7 @@ export function CategoriesSection() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
               }}
             >
-              <Link href={`/learn?category=${cat.name.toLowerCase()}`}>
+              <Link href={`/categories`}>
                 <CategoryCard {...cat} index={i} />
               </Link>
             </motion.div>
