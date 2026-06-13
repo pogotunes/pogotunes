@@ -7,8 +7,8 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
-    const category = await prisma.category.findUnique({
-      where: { slug },
+    const category = await prisma.category.findFirst({
+      where: { slug, isActive: true },
       include: {
         lessons: { where: { status: "PUBLISHED" }, orderBy: { order: "asc" }, take: 20 },
         quizzes: { where: { status: "PUBLISHED" }, take: 10 },
