@@ -13,82 +13,104 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/dashboard`, lastModified: new Date(), changeFrequency: "daily", priority: 0.7 },
   ]
 
-  const categories = await prisma.category.findMany({
-    where: { isActive: true },
-    select: { slug: true, updatedAt: true },
-  })
-  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${baseUrl}/categories/${cat.slug}`,
-    lastModified: cat.updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }))
+  let categoryPages: MetadataRoute.Sitemap = []
+  let lessonPages: MetadataRoute.Sitemap = []
+  let videoPages: MetadataRoute.Sitemap = []
+  let quizPages: MetadataRoute.Sitemap = []
+  let gamePages: MetadataRoute.Sitemap = []
+  let flashcardPages: MetadataRoute.Sitemap = []
+  let blogPages: MetadataRoute.Sitemap = []
 
-  const lessons = await prisma.lesson.findMany({
-    where: { status: "PUBLISHED" },
-    select: { slug: true, updatedAt: true },
-  })
-  const lessonPages: MetadataRoute.Sitemap = lessons.map((lesson) => ({
-    url: `${baseUrl}/lessons/${lesson.slug}`,
-    lastModified: lesson.updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }))
+  try {
+    const categories = await prisma.category.findMany({
+      where: { isActive: true },
+      select: { slug: true, updatedAt: true },
+    })
+    categoryPages = categories.map((cat) => ({
+      url: `${baseUrl}/categories/${cat.slug}`,
+      lastModified: cat.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    }))
+  } catch {}
 
-  const videos = await prisma.video.findMany({
-    where: { status: "PUBLISHED" },
-    select: { slug: true, updatedAt: true },
-  })
-  const videoPages: MetadataRoute.Sitemap = videos.map((v) => ({
-    url: `${baseUrl}/videos/${v.slug}`,
-    lastModified: v.updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }))
+  try {
+    const lessons = await prisma.lesson.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    })
+    lessonPages = lessons.map((lesson) => ({
+      url: `${baseUrl}/lessons/${lesson.slug}`,
+      lastModified: lesson.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }))
+  } catch {}
 
-  const quizzes = await prisma.quiz.findMany({
-    where: { status: "PUBLISHED" },
-    select: { slug: true, updatedAt: true },
-  })
-  const quizPages: MetadataRoute.Sitemap = quizzes.map((q) => ({
-    url: `${baseUrl}/quiz/${q.slug}`,
-    lastModified: q.updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }))
+  try {
+    const videos = await prisma.video.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    })
+    videoPages = videos.map((v) => ({
+      url: `${baseUrl}/videos/${v.slug}`,
+      lastModified: v.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }))
+  } catch {}
 
-  const games = await prisma.game.findMany({
-    where: { status: "PUBLISHED" },
-    select: { slug: true, updatedAt: true },
-  })
-  const gamePages: MetadataRoute.Sitemap = games.map((g) => ({
-    url: `${baseUrl}/games/${g.slug}`,
-    lastModified: g.updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }))
+  try {
+    const quizzes = await prisma.quiz.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    })
+    quizPages = quizzes.map((q) => ({
+      url: `${baseUrl}/quiz/${q.slug}`,
+      lastModified: q.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }))
+  } catch {}
 
-  const flashcards = await prisma.flashcard.findMany({
-    where: { status: "PUBLISHED" },
-    select: { slug: true, updatedAt: true },
-  })
-  const flashcardPages: MetadataRoute.Sitemap = flashcards.map((f) => ({
-    url: `${baseUrl}/flashcards/${f.slug}`,
-    lastModified: f.updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }))
+  try {
+    const games = await prisma.game.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    })
+    gamePages = games.map((g) => ({
+      url: `${baseUrl}/games/${g.slug}`,
+      lastModified: g.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }))
+  } catch {}
 
-  const blogs = await prisma.blog.findMany({
-    where: { status: "PUBLISHED" },
-    select: { slug: true, updatedAt: true },
-  })
-  const blogPages: MetadataRoute.Sitemap = blogs.map((b) => ({
-    url: `${baseUrl}/blog/${b.slug}`,
-    lastModified: b.updatedAt,
-    changeFrequency: "monthly" as const,
-    priority: 0.5,
-  }))
+  try {
+    const flashcards = await prisma.flashcard.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    })
+    flashcardPages = flashcards.map((f) => ({
+      url: `${baseUrl}/flashcards/${f.slug}`,
+      lastModified: f.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }))
+  } catch {}
+
+  try {
+    const blogs = await prisma.blog.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true, updatedAt: true },
+    })
+    blogPages = blogs.map((b) => ({
+      url: `${baseUrl}/blog/${b.slug}`,
+      lastModified: b.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    }))
+  } catch {}
 
   return [
     ...staticPages,
