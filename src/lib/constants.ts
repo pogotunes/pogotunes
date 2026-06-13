@@ -172,11 +172,12 @@ export const FOOTER_LINKS = {
 }
 
 export const SOCIAL_LINKS = [
-  { name: 'Facebook', href: 'https://facebook.com/pogotunes', icon: 'facebook' },
-  { name: 'Twitter', href: 'https://twitter.com/pogotunes', icon: 'twitter' },
-  { name: 'Instagram', href: 'https://instagram.com/pogotunes', icon: 'instagram' },
-  { name: 'YouTube', href: 'https://youtube.com/@pogotunes', icon: 'youtube' },
-  { name: 'TikTok', href: 'https://tiktok.com/@pogotunes', icon: 'music' },
+  { name: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61590129552207', icon: 'facebook' },
+  { name: 'X (Twitter)', href: 'https://x.com/pogotunes', icon: 'twitter' },
+  { name: 'Instagram', href: 'https://www.instagram.com/pogo.tunes/', icon: 'instagram' },
+  { name: 'YouTube', href: 'https://www.youtube.com/@Pogotunes', icon: 'youtube' },
+  { name: 'Pinterest', href: 'https://in.pinterest.com/pogotunes/', icon: 'pinterest' },
+  { name: 'Blog', href: 'https://pogotunes.blogspot.com', icon: 'blog' },
 ]
 
 export const COLORS = {

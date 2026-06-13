@@ -8,6 +8,8 @@ import {
   MessageCircle,
   Camera,
   Video,
+  Bookmark,
+  Newspaper,
   Heart,
   ArrowUp,
   Sparkles,
@@ -33,12 +35,14 @@ const footerCategories = [
   { name: 'Games', href: '/games', color: '#FF6B6B' },
 ]
 
-const socialIcons = [
-  { name: 'Facebook', icon: Globe, href: '#', color: '#1877F2' },
-  { name: 'Twitter', icon: MessageCircle, href: '#', color: '#1DA1F2' },
-  { name: 'Instagram', icon: Camera, href: '#', color: '#E4405F' },
-  { name: 'YouTube', icon: Video, href: '#', color: '#FF0000' },
-]
+const socialIconMap: Record<string, { icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; color: string }> = {
+  Facebook: { icon: Globe, color: '#1877F2' },
+  'X (Twitter)': { icon: MessageCircle, color: '#1DA1F2' },
+  Instagram: { icon: Camera, color: '#E4405F' },
+  YouTube: { icon: Video, color: '#FF0000' },
+  Pinterest: { icon: Bookmark, color: '#E60023' },
+  Blog: { icon: Newspaper, color: '#6C63FF' },
+}
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -106,19 +110,23 @@ export function Footer() {
             <p className="mt-3 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
               The world&apos;s best educational platform for kids. Making learning fun through interactive games, videos, and quizzes.
             </p>
-            <div className="mt-5 flex items-center gap-3">
-              {socialIcons.map((social) => {
-                const Icon = social.icon
+            <div className="mt-5 flex items-center gap-3 flex-wrap">
+              {SOCIAL_LINKS.map((social) => {
+                const mapped = socialIconMap[social.name]
+                if (!mapped) return null
+                const Icon = mapped.icon
                 return (
                   <motion.a
                     key={social.name}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ scale: 1.15, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex h-9 w-9 items-center justify-center rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
                     aria-label={social.name}
                   >
-                    <Icon className="h-4 w-4" style={{ color: social.color }} />
+                    <Icon className="h-4 w-4" style={{ color: mapped.color }} />
                   </motion.a>
                 )
               })}
