@@ -3,8 +3,10 @@ import { isAIConfigured } from "@/lib/env"
 
 const FREE_MODELS = [
   "google/gemini-2.0-flash-exp:free",
+  "google/gemini-2.0-flash-lite-preview-02-05:free",
   "mistralai/mistral-7b-instruct:free",
   "meta-llama/llama-3.2-3b-instruct:free",
+  "cognitivecomputations/dolphin3.0-mistral-7b:free",
 ]
 
 const systemPrompts: Record<string, string> = {
@@ -28,34 +30,38 @@ export async function POST(req: Request) {
   try {
     const { type = "fact" } = await req.json()
     const prompt = systemPrompts[type] || systemPrompts.fact
+    let lastErr = ""
 
-    const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: FREE_MODELS[0],
-          messages: [{ role: "user", content: prompt }],
-          max_tokens: 200,
-          temperature: 0.9,
-        }),
+    for (const model of FREE_MODELS) {
+      const response = await fetch(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: "user", content: prompt }],
+            max_tokens: 200,
+            temperature: 0.9,
+          }),
+        }
+      )
+
+      if (response.ok) {
+        const data = await response.json()
+        const text = data.choices?.[0]?.message?.content || ""
+        return NextResponse.json({ success: true, data: { text, type } })
       }
-    )
 
-    if (!response.ok) {
       const err = await response.text()
-      console.error("OpenRouter error:", response.status, err)
-      return NextResponse.json({ success: false, error: "AI service error" }, { status: 502 })
+      lastErr = `Model ${model}: HTTP ${response.status} - ${err.slice(0, 200)}`
+      console.error("OpenRouter error:", lastErr)
     }
 
-    const data = await response.json()
-    const text = data.choices?.[0]?.message?.content || ""
-
-    return NextResponse.json({ success: true, data: { text, type } })
+    return NextResponse.json({ success: false, error: lastErr || "AI service error" }, { status: 502 })
   } catch (error) {
     console.error("AI fun endpoint error:", error)
     return NextResponse.json({ success: false, error: "Internal error" }, { status: 500 })
