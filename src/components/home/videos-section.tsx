@@ -1,120 +1,123 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
 import { Play, Clock, ArrowRight, Sparkles, Music, BookOpen, Palette, Globe } from 'lucide-react'
+import type { Video } from '@/types'
 
-const videos = [
-  {
-    title: 'ABC Phonics Song', category: 'Phonics', duration: '5:30', icon: Music,
-    color: '#FF6B6B', views: '1.2M',
-  },
-  {
-    title: 'Count to 100 Song', category: 'Math', duration: '4:15', icon: BookOpen,
-    color: '#FFD93D', views: '890K',
-  },
-  {
-    title: 'Rainbow Colors', category: 'Art', duration: '3:45', icon: Palette,
-    color: '#6BCBFF', views: '750K',
-  },
-  {
-    title: 'Solar System Tour', category: 'Science', duration: '8:20', icon: Globe,
-    color: '#6C63FF', views: '620K',
-  },
-  {
-    title: 'Animal Sounds', category: 'GK', duration: '4:00', icon: Music,
-    color: '#51CF66', views: '1.5M',
-  },
-  {
-    title: 'Days of the Week', category: 'GK', duration: '2:50', icon: BookOpen,
-    color: '#FF6B6B', views: '980K',
-  },
-]
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
+  phonics: Music,
+  math: BookOpen,
+  art: Palette,
+  science: Globe,
+  music: Music,
+  reading: BookOpen,
+  alphabet: Music,
+  colors: Palette,
+  animals: Globe,
+  numbers: BookOpen,
+}
 
-function VideoCard({ title, category, duration, icon: Icon, color, views, index }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  title: string; category: string; duration: string; icon: React.ComponentType<any>
-  color: string; views: string; index: number
+const videoColors = ['#FF6B6B', '#FFD93D', '#6BCBFF', '#6C63FF', '#51CF66', '#FF6B6B']
+
+function formatDuration(seconds?: number): string {
+  if (!seconds) return '5:00'
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
+
+function VideoCard({ title, category, duration, color, index, slug }: {
+  title: string; category: string; duration: string; color: string; index: number; slug: string
 }) {
   return (
-    <motion.div
-      className="group cursor-pointer"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-    >
-      <div
-        className="relative rounded-2xl overflow-hidden backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-1"
-        style={{
-          background: `linear-gradient(135deg, ${color}08, ${color}02)`,
-          border: `1px solid ${color}20`,
-        }}
+    <Link href={`/videos/${slug}`}>
+      <motion.div
+        className="group cursor-pointer"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.5, delay: index * 0.08 }}
       >
         <div
-          className="relative aspect-video flex items-center justify-center overflow-hidden"
-          style={{ background: `linear-gradient(135deg, ${color}20, ${color}05)` }}
+          className="relative rounded-2xl overflow-hidden backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-1"
+          style={{
+            background: `linear-gradient(135deg, ${color}08, ${color}02)`,
+            border: `1px solid ${color}20`,
+          }}
         >
-          <motion.div
-            className="absolute inset-0 opacity-15"
-            style={{ background: `radial-gradient(circle at 30% 30%, ${color}, transparent 70%)` }}
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <Icon size={48} style={{ color: `${color}80` }} />
-          </motion.div>
-
-          <motion.div
-            className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            whileHover={{ opacity: 1 }}
+          <div
+            className="relative aspect-video flex items-center justify-center overflow-hidden"
+            style={{ background: `linear-gradient(135deg, ${color}20, ${color}05)` }}
           >
             <motion.div
-              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30"
-              whileHover={{ scale: 1.1, background: 'rgba(255,255,255,0.3)' }}
+              className="absolute inset-0 opacity-15"
+              style={{ background: `radial-gradient(circle at 30% 30%, ${color}, transparent 70%)` }}
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <motion.div
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <Play size={24} className="text-white ml-0.5" />
+              <Music size={48} style={{ color: `${color}80` }} />
             </motion.div>
-          </motion.div>
 
-          <span
-            className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold"
-            style={{
-              background: `${color}30`,
-              color,
-              border: `1px solid ${color}40`,
-            }}
-          >
-            {category}
-          </span>
+            <motion.div
+              className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              whileHover={{ opacity: 1 }}
+            >
+              <motion.div
+                className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30"
+                whileHover={{ scale: 1.1, background: 'rgba(255,255,255,0.3)' }}
+              >
+                <Play size={24} className="text-white ml-0.5" />
+              </motion.div>
+            </motion.div>
 
-          <span className="absolute bottom-3 right-3 px-2 py-1 rounded-full text-[10px] font-semibold flex items-center gap-1 glass">
-            <Clock size={10} />
-            {duration}
-          </span>
+            <span
+              className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold"
+              style={{
+                background: `${color}30`,
+                color,
+                border: `1px solid ${color}40`,
+              }}
+            >
+              {category}
+            </span>
+
+            <span className="absolute bottom-3 right-3 px-2 py-1 rounded-full text-[10px] font-semibold flex items-center gap-1 glass">
+              <Clock size={10} />
+              {duration}
+            </span>
+          </div>
+
+          <div className="p-3 sm:p-4">
+            <h3
+              className="font-bold text-white text-sm sm:text-base mb-1 group-hover:text-transparent group-hover:bg-clip-text transition-all line-clamp-1"
+              style={{ fontFamily: 'var(--font-baloo)' }}
+            >
+              {title}
+            </h3>
+          </div>
         </div>
-
-        <div className="p-3 sm:p-4">
-          <h3
-            className="font-bold text-white text-sm sm:text-base mb-1 group-hover:text-transparent group-hover:bg-clip-text transition-all line-clamp-1"
-            style={{ fontFamily: 'var(--font-baloo)' }}
-          >
-            {title}
-          </h3>
-          <span className="text-[10px] text-white/30 font-nunito">{views} views</span>
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Link>
   )
 }
 
 export function VideosSection() {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const [videos, setVideos] = useState<Video[]>([])
+
+  useEffect(() => {
+    fetch('/api/videos')
+      .then(r => r.json())
+      .then(r => setVideos(r.data || []))
+      .catch(() => setVideos([]))
+  }, [])
 
   return (
     <section ref={ref} className="relative py-24 overflow-hidden">
@@ -153,8 +156,16 @@ export function VideosSection() {
         </motion.div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-          {videos.map((video, i) => (
-            <VideoCard key={video.title} {...video} index={i} />
+          {videos.slice(0, 6).map((video, i) => (
+            <VideoCard
+              key={video.id}
+              title={video.title}
+              category={(video as any).category?.name || 'General'}
+              duration={formatDuration(video.duration)}
+              color={videoColors[i % videoColors.length]}
+              slug={video.slug}
+              index={i}
+            />
           ))}
         </div>
 

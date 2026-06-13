@@ -96,6 +96,22 @@ function CategoryCard({ name, icon: Icon, color, desc, index }: {
   )
 }
 
+const slugOverrides: Record<string, string> = {
+  Alphabet: 'alphabet',
+  Numbers: 'numbers',
+  Shapes: 'colors-shapes',
+  Colors: 'colors-shapes',
+  Animals: 'animals',
+  'Body Parts': 'body-health',
+  Phonics: 'phonics',
+  Math: 'mathematics',
+  Science: 'science',
+  Writing: 'writing',
+  'Tech Skills': 'technology',
+  Hindi: 'foreign-languages',
+  English: 'english-language',
+}
+
 export function CategoriesSection() {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
@@ -152,7 +168,7 @@ export function CategoriesSection() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
               }}
             >
-              <Link href={`/categories`}>
+              <Link href={slugOverrides[cat.name] ? `/categories/${slugOverrides[cat.name]}` : '/learn'}>
                 <CategoryCard {...cat} index={i} />
               </Link>
             </motion.div>
