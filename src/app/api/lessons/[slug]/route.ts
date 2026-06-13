@@ -7,15 +7,16 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
-    const lesson = await prisma.lesson.findUnique({
-      where: { slug },
+    const lesson = await prisma.lesson.findFirst({
+      where: { slug, status: "PUBLISHED" },
       include: { category: true },
     })
     if (!lesson) {
       return errorResponse("Lesson not found", 404)
     }
     return successResponse(lesson)
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch lesson:", error)
     return errorResponse("Failed to fetch lesson", 500)
   }
 }

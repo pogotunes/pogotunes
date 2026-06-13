@@ -22,6 +22,7 @@ const optionalVars = [
   "REDIS_URL",
   "NEXT_PUBLIC_GA_ID",
   "NEXT_PUBLIC_AD_CLIENT",
+  "OPENROUTER_API_KEY",
 ] as const
 
 type EnvVar = (typeof requiredVars)[number] | (typeof optionalVars)[number]
@@ -73,4 +74,8 @@ export function isEmailConfigured(): boolean {
 
 export function isCloudinaryConfigured(): boolean {
   return !!(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY)
+}
+
+export function isAIConfigured(): boolean {
+  return !!process.env.OPENROUTER_API_KEY
 }

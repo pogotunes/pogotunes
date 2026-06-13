@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Baloo_2, Nunito } from "next/font/google"
 import { Providers } from "@/providers"
+import { AITutor } from "@/components/ai/ai-tutor"
 import { validateEnv } from "@/lib/env"
 import "./globals.css"
 
@@ -65,7 +66,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <AITutor />
+        </Providers>
       </body>
     </html>
   )

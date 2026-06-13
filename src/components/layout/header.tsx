@@ -359,14 +359,14 @@ export function Header() {
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
                   <Link
-                    href="/auth/login"
+                    href="/login"
                     className="flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200"
                   >
                     <LogIn className="h-4 w-4" />
                     Log In
                   </Link>
                   <Link
-                    href="/auth/register"
+                    href="/signup"
                     className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#FF6B6B] to-[#6C63FF] px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-[#FF6B6B]/20 hover:shadow-xl hover:shadow-[#FF6B6B]/30 transition-all duration-200 hover:scale-105 active:scale-95"
                   >
                     <UserPlus className="h-4 w-4" />

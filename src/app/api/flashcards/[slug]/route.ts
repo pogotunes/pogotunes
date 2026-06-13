@@ -7,8 +7,8 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
-    const flashcard = await prisma.flashcard.findUnique({
-      where: { slug },
+    const flashcard = await prisma.flashcard.findFirst({
+      where: { slug, status: "PUBLISHED" },
       include: {
         category: true,
         cards: { orderBy: { order: "asc" } },
@@ -18,7 +18,8 @@ export async function GET(
       return errorResponse("Flashcard set not found", 404)
     }
     return successResponse(flashcard)
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch flashcard:", error)
     return errorResponse("Failed to fetch flashcard set", 500)
   }
 }

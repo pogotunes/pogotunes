@@ -7,8 +7,8 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
-    const quiz = await prisma.quiz.findUnique({
-      where: { slug },
+    const quiz = await prisma.quiz.findFirst({
+      where: { slug, status: "PUBLISHED" },
       include: {
         category: true,
         questions: { orderBy: { order: "asc" } },
@@ -18,7 +18,8 @@ export async function GET(
       return errorResponse("Quiz not found", 404)
     }
     return successResponse(quiz)
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch quiz:", error)
     return errorResponse("Failed to fetch quiz", 500)
   }
 }

@@ -227,14 +227,14 @@ export function MobileNav() {
               ) : (
                 <div className="space-y-2">
                   <Link
-                    href="/auth/login"
+                    href="/login"
                     className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF6B6B] to-[#6C63FF] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#FF6B6B]/20 hover:shadow-xl hover:shadow-[#FF6B6B]/30 transition-all duration-200 hover:scale-[1.02]"
                   >
                     <LogIn className="h-4 w-4" />
                     Log In
                   </Link>
                   <Link
-                    href="/auth/register"
+                    href="/signup"
                     className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                   >
                     <UserPlus className="h-4 w-4" />

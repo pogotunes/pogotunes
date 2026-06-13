@@ -7,10 +7,11 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
-    const post = await prisma.blog.findUnique({ where: { slug } })
+    const post = await prisma.blog.findFirst({ where: { slug, status: "PUBLISHED" } })
     if (!post) return errorResponse("Blog post not found", 404)
     return successResponse(post)
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch blog post:", error)
     return errorResponse("Failed to fetch blog post", 500)
   }
 }

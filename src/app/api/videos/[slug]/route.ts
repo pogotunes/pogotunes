@@ -7,15 +7,16 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
-    const video = await prisma.video.findUnique({
-      where: { slug },
+    const video = await prisma.video.findFirst({
+      where: { slug, status: "PUBLISHED" },
       include: { category: true },
     })
     if (!video) {
       return errorResponse("Video not found", 404)
     }
     return successResponse(video)
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch video:", error)
     return errorResponse("Failed to fetch video", 500)
   }
 }

@@ -14,6 +14,7 @@ import {
   PartnersSection,
   NewsletterSection,
 } from '@/components/home'
+import { FunFactSection } from '@/components/ai/fun-fact-section'
 
 export default function HomePage() {
   return (
@@ -24,6 +25,7 @@ export default function HomePage() {
       <TrendingSection />
       <StatsSection />
       <CharactersSection />
+      <FunFactSection />
       <GamesSection />
       <VideosSection />
       <TestimonialsSection />

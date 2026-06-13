@@ -10,18 +10,19 @@ export async function GET(
     const category = await prisma.category.findUnique({
       where: { slug },
       include: {
-        lessons: { where: { status: "PUBLISHED" }, orderBy: { order: "asc" } },
-        quizzes: { where: { status: "PUBLISHED" } },
-        games: { where: { status: "PUBLISHED" } },
-        videos: { where: { status: "PUBLISHED" } },
-        flashcards: { where: { status: "PUBLISHED" } },
+        lessons: { where: { status: "PUBLISHED" }, orderBy: { order: "asc" }, take: 20 },
+        quizzes: { where: { status: "PUBLISHED" }, take: 10 },
+        games: { where: { status: "PUBLISHED" }, take: 10 },
+        videos: { where: { status: "PUBLISHED" }, take: 10 },
+        flashcards: { where: { status: "PUBLISHED" }, take: 10 },
       },
     })
     if (!category) {
       return errorResponse("Category not found", 404)
     }
     return successResponse(category)
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch category:", error)
     return errorResponse("Failed to fetch category", 500)
   }
 }
