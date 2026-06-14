@@ -26,7 +26,8 @@ export async function GET(request: Request) {
       prisma.lesson.count({ where: where as any }),
     ])
 
-    return successResponse({
+    return Response.json({
+      success: true,
       data: lessons,
       total,
       page,
