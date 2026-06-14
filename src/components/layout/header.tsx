@@ -25,7 +25,6 @@ import {
   Video,
   Trophy,
   Newspaper,
-  ChevronRight,
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useIsScrolled } from '@/hooks/use-scroll-position'

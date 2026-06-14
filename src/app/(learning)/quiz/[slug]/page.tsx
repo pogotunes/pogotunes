@@ -93,7 +93,6 @@ export default function QuizPage() {
     }
   }
 
-  const completedCount = Object.keys(answers).length
   const accentColor = '#6BCBFF'
 
   if (showResults || timeUp) {

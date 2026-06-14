@@ -9,7 +9,7 @@ import {
   type HTMLAttributes,
   type ButtonHTMLAttributes,
 } from "react";
-import { motion, AnimatePresence, type HTMLMotionProps } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface TabsContextValue {

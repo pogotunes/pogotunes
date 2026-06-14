@@ -7,11 +7,9 @@ import {
   useCallback,
   type ReactNode,
   type HTMLAttributes,
-  type KeyboardEvent,
 } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";

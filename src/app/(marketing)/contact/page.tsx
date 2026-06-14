@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { staggerContainer, fadeInUp } from '@/animations'
-import { Card, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Card, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Mail, MapPin, Phone, Send, CheckCircle } from 'lucide-react'

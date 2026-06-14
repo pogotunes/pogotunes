@@ -8,20 +8,13 @@ import {
   X,
   CheckCheck,
   Trash2,
-  Sparkles,
   Trophy,
-  Target,
   Star,
-  Flame,
   Heart,
-  Gift,
   Info,
-  AlertTriangle,
   Clock,
-  Loader2,
 } from 'lucide-react'
 import { useUIStore } from '@/store/ui-store'
-import { useOnClickOutside } from '@/hooks/use-on-click-outside'
 import { formatDistanceToNow } from 'date-fns'
 import { cn } from '@/lib/utils'
 

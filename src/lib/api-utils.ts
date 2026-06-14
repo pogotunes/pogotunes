@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
-import { verifyToken, generateToken } from "./auth"
+import { verifyToken } from "./auth"
 import { prisma } from "./prisma"
 
 const COOKIE_NAME = "pogotunes-token"

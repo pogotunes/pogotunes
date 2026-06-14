@@ -18,7 +18,6 @@ import {
   HelpCircle,
   Layers,
   ArrowRight,
-  Loader2,
   Command,
   Hash,
 } from 'lucide-react'

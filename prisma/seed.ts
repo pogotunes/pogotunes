@@ -1297,7 +1297,7 @@ async function main() {
   for (const [catSlug, catId] of categoryMap) {
     if (allLessonData[catSlug]) continue
     const title = `Introduction to ${catSlug.replace(/-/g, " ")}`
-    const shortLesson = await prisma.lesson.create({
+    await prisma.lesson.create({
       data: {
         title,
         slug: `intro-${catSlug}`,

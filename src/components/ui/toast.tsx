@@ -1,7 +1,6 @@
 "use client";
 
 import { Toaster as HotToaster } from "react-hot-toast";
-import { cn } from "@/lib/utils";
 
 function Toaster() {
   return (

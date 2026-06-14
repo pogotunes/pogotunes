@@ -52,7 +52,7 @@ export default function FlashcardsPage() {
       })
       .catch(() => {})
       .finally(() => setLoading(false))
-  }, [slug])
+  }, [slug, shuffled])
 
   const currentCard = cards[currentIndex]
   const progress = cards.length > 0 ? ((currentIndex + 1) / cards.length) * 100 : 0

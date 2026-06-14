@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence, type Variants } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import {
   BookOpen,
   Gamepad2,
@@ -21,17 +21,13 @@ import {
   Music,
   Puzzle,
   Brain,
-  Shapes,
   Rocket,
   Heart,
   Smile,
   Leaf,
-  Monitor,
   Lightbulb,
   Target,
   ArrowRight,
-  Star,
-  Flame,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -121,7 +117,7 @@ const itemVariants: Variants = {
 }
 
 export function MegaMenu() {
-  const [activeColumn, setActiveColumn] = useState<string | null>(null)
+  const [, setActiveColumn] = useState<string | null>(null)
 
   return (
     <motion.div

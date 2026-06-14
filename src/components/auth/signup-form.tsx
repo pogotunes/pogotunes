@@ -32,9 +32,9 @@ const strengthConfig = {
 }
 
 const accountTypes = [
-  { value: 'STUDENT', label: 'Student', icon: GraduationCap, desc: 'I want to learn' },
-  { value: 'PARENT', label: 'Parent', icon: User, desc: 'I am a parent' },
-  { value: 'TEACHER', label: 'Teacher', icon: User, desc: 'I am an educator' },
+  { value: 'STUDENT', label: 'Student', icon: GraduationCap },
+  { value: 'PARENT', label: 'Parent', icon: User },
+  { value: 'TEACHER', label: 'Teacher', icon: User },
 ] as const
 
 type FormData = RegisterInput & { acceptTerms: boolean; accountType: string }
@@ -75,7 +75,9 @@ export function SignupForm() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const { acceptTerms: _, accountType: __, ...registerData } = data
+      const registerData = { ...data }
+      delete (registerData as Record<string, unknown>).acceptTerms
+      delete (registerData as Record<string, unknown>).accountType
       await registerMutation.mutateAsync(registerData as RegisterInput)
       setIsSuccess(true)
     } catch (err) {
@@ -147,7 +149,7 @@ export function SignupForm() {
       <motion.div variants={fadeUp}>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">I am a</label>
         <div className="grid grid-cols-3 gap-2">
-          {accountTypes.map(({ value, label, icon: Icon, desc }) => (
+          {accountTypes.map(({ value, label, icon: Icon }) => (
             <button
               key={value}
               type="button"

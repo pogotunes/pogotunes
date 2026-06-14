@@ -14,13 +14,10 @@ import {
   ArrowUp,
   Sparkles,
   Mail,
-  MapPin,
-  Phone,
   ChevronRight,
   Loader2,
 } from 'lucide-react'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
-import { cn } from '@/lib/utils'
 import { FOOTER_LINKS, SOCIAL_LINKS, SITE_NAME } from '@/lib/constants'
 import toast from 'react-hot-toast'
 

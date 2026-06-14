@@ -22,7 +22,6 @@ import {
   Sparkles,
   X,
   Award,
-  Shield,
   Mail,
 } from 'lucide-react'
 import { useUIStore } from '@/store/ui-store'

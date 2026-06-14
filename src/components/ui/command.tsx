@@ -46,7 +46,7 @@ function Command({
     }
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, setOpen]);
+  }, [isOpen]);
 
   return (
     <div className={cn("relative", className)} {...props}>

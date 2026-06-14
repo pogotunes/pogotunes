@@ -3,6 +3,7 @@ const requiredVars = [
   "JWT_SECRET",
 ] as const
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const optionalVars = [
   "JWT_EXPIRES_IN",
   "NEXT_PUBLIC_APP_URL",
@@ -65,7 +66,7 @@ export function getEnvVar(key: EnvVar, fallback?: string): string {
 }
 
 export function isSocialAuthConfigured(): boolean {
-  return !!(process.env.GOOGLE_CLIENT_ID || process.env.FACEBOOK_CLIENT_ID || process.env.GITHUB_CLIENT_ID)
+  return !!(process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_SECRET || process.env.FACEBOOK_CLIENT_ID || process.env.FACEBOOK_CLIENT_SECRET || process.env.GITHUB_CLIENT_ID || process.env.GITHUB_CLIENT_SECRET)
 }
 
 export function isEmailConfigured(): boolean {

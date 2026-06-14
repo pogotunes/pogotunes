@@ -6,7 +6,6 @@ import {
   useContext,
   type ReactNode,
   type HTMLAttributes,
-  type KeyboardEvent,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";

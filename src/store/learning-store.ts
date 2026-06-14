@@ -43,7 +43,7 @@ const initialState = {
   error: null,
 }
 
-export const useLearningStore = create<LearningState>()((set, get) => ({
+export const useLearningStore = create<LearningState>()((set) => ({
   ...initialState,
 
   setCurrentLesson: (lesson) => set({ currentLesson: lesson }),

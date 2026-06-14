@@ -12,7 +12,6 @@ import {
   type ButtonHTMLAttributes,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DropdownMenuContextValue {

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, Sparkles, ArrowRight } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { loginSchema, type LoginInput } from '@/lib/validations'
@@ -39,13 +39,10 @@ export function LoginForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
-    watch,
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
   })
-
-  const values = watch()
 
   const onSubmit = async (data: LoginInput) => {
     try {

@@ -7,7 +7,6 @@ import { ThumbsUp, MessageCircle, Bookmark, Share2, List, Grid } from 'lucide-re
 import { staggerContainer, fadeInUp, staggerItem } from '@/animations'
 import { Breadcrumb } from '@/components/learning/breadcrumb'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { CATEGORIES } from '@/lib/constants'
-import { staggerContainer, fadeInUp, staggerItem } from '@/animations'
+import { staggerContainer, fadeInUp } from '@/animations'
 import { Breadcrumb } from '@/components/learning/breadcrumb'
 import { CategoryCard } from '@/components/learning/category-card'
 import { BookOpen, Sparkles, Target, Zap } from 'lucide-react'
