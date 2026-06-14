@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -9,6 +9,7 @@ import {
   Calendar, GraduationCap,
 } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { registerSchema, getPasswordStrength, type RegisterInput } from '@/lib/validations'
 import { useRegister } from '@/hooks/use-auth'
 import { SocialButtons } from '@/components/auth/social-buttons'
@@ -40,10 +41,18 @@ const accountTypes = [
 type FormData = RegisterInput & { acceptTerms: boolean; accountType: string }
 
 export function SignupForm() {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const registerMutation = useRegister()
+
+  useEffect(() => {
+    if (isSuccess) {
+      const timer = setTimeout(() => router.push('/dashboard'), 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [isSuccess, router])
 
   const {
     register,

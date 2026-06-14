@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, Sparkles, ArrowRight, Fingerprint } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { loginSchema, type LoginInput } from '@/lib/validations'
 import { useLogin } from '@/hooks/use-auth'
 import { SocialButtons } from '@/components/auth/social-buttons'
@@ -22,10 +23,18 @@ const stagger = {
 }
 
 export function LoginForm() {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [isOtpMode, setIsOtpMode] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const loginMutation = useLogin()
+
+  useEffect(() => {
+    if (isSuccess) {
+      const timer = setTimeout(() => router.push('/dashboard'), 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [isSuccess, router])
 
   const {
     register,

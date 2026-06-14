@@ -39,7 +39,7 @@ export const useAuthStore = create<AuthState>()(
             body: JSON.stringify({ email, password }),
           })
           const data = await response.json()
-          if (!response.ok) throw new Error(data.message || 'Login failed')
+          if (!response.ok) throw new Error(data.error || data.message || 'Login failed')
           set({ user: data.data || data.user, isAuthenticated: true })
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Login failed'
@@ -59,7 +59,7 @@ export const useAuthStore = create<AuthState>()(
             body: JSON.stringify(data),
           })
           const result = await response.json()
-          if (!response.ok) throw new Error(result.message || 'Registration failed')
+          if (!response.ok) throw new Error(result.error || result.message || 'Registration failed')
           set({ user: result.data || result.user, isAuthenticated: true })
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Registration failed'
