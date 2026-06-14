@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+import type { Prisma } from "@prisma/client"
 import { successResponse, errorResponse } from "@/lib/api-utils"
 
 export async function GET(request: Request) {
@@ -7,11 +8,11 @@ export async function GET(request: Request) {
     const categoryId = searchParams.get("categoryId")
     const limit = Math.min(Number(searchParams.get("limit")) || 20, 50)
 
-    const where: Record<string, unknown> = { status: "PUBLISHED" }
+    const where: Prisma.FlashcardWhereInput = { status: "PUBLISHED" }
     if (categoryId) where.categoryId = categoryId
 
     const flashcards = await prisma.flashcard.findMany({
-      where: where as any,
+      where,
       include: { category: true, _count: { select: { cards: true } } },
       orderBy: { createdAt: "desc" },
       take: limit,

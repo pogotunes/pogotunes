@@ -84,6 +84,7 @@ export function SearchBar() {
     'phonics',
   ])
 
+  const { searchOpen, setSearchOpen } = useUIStore()
   const debouncedQuery = useDebounce(query, 300)
   const inputRef = useRef<HTMLInputElement>(null)
   const panelRef = useOnClickOutside<HTMLDivElement>(() => {
@@ -92,8 +93,6 @@ export function SearchBar() {
       setSearchOpen(false)
     }
   })
-
-  const { searchOpen, setSearchOpen } = useUIStore()
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

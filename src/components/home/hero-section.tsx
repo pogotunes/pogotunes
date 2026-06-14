@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef, useState, useEffect, useMemo } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { Play, Sparkles, ArrowRight, Star, BookOpen, Palette, Music, Cloud, Sun, MoonStar } from 'lucide-react'
+import { Play, Sparkles, ArrowRight, Star, BookOpen, Palette, Music, Cloud, Sun } from 'lucide-react'
 
 const floatingElements = [
   { Icon: Star, color: '#FFD93D', size: 24, delay: 0, x: '10%', y: '15%', duration: 3 },
@@ -16,28 +16,16 @@ const floatingElements = [
   { Icon: Sun, color: '#FFD93D', size: 36, delay: 0.3, x: '85%', y: '55%', duration: 5 },
 ]
 
-function useMousePosition() {
-  const ref = useRef({ x: 0, y: 0 })
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      ref.current = { x: e.clientX, y: e.clientY }
-    }
-    window.addEventListener('mousemove', handler)
-    return () => window.removeEventListener('mousemove', handler)
-  }, [])
-  return ref
-}
-
 function ParticleBackground() {
   const particles = useMemo(() =>
     Array.from({ length: 40 }, (_, i) => ({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 2,
-      duration: Math.random() * 4 + 3,
-      delay: Math.random() * 3,
-      color: [ '#FF6B6B', '#FFD93D', '#6BCBFF', '#6C63FF', '#51CF66' ][Math.floor(Math.random() * 5)],
+      x: (i * 17 + 7) % 100,
+      y: (i * 23 + 11) % 100,
+      size: (i % 4) + 2,
+      duration: (i % 4) + 3,
+      delay: (i * 0.5) % 3,
+      color: ['#FF6B6B', '#FFD93D', '#6BCBFF', '#6C63FF', '#51CF66'][i % 5],
     })), [])
 
   return (
@@ -147,7 +135,6 @@ function CharacterCard({ name, emoji, color, delay, label }: {
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const mouseRef = useMousePosition()
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
@@ -179,26 +166,34 @@ export function HeroSection() {
       ))}
 
       <motion.div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.15 }} aria-hidden="true">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 3 + 2,
-              delay: Math.random() * 5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
+        {(() => {
+          const twinkles = Array.from({ length: 8 }, (_, i) => ({
+            left: (i * 7 + 13) % 100,
+            top: (i * 11 + 5) % 100,
+            duration: (i % 5) + 2,
+            delay: (i * 3) % 5,
+          }))
+          return twinkles.map((t, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full"
+              style={{
+                left: `${t.left}%`,
+                top: `${t.top}%`,
+              }}
+              animate={{
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0],
+              }}
+              transition={{
+                duration: t.duration,
+                delay: t.delay,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          ))
+        })()}
       </motion.div>
 
       <motion.div

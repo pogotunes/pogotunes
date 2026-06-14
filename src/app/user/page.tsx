@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useAuthStore } from '@/store/auth-store'
-import { Spinner } from '@/components/ui/spinner'
 import {
   BookOpen, Award, Zap, Star, TrendingUp,
   Clock, Target, Trophy, Sparkles, Gamepad2,
@@ -37,14 +36,14 @@ export default function UserProfilePage() {
       fetch('/api/achievements/user').then(r => r.json()),
     ])
       .then(([progressRes, achievementsRes]) => {
-        const progress = progressRes.success ? progressRes.data : []
-        const achievements = achievementsRes.success ? achievementsRes.data : []
-        const completed = progress.filter((p: any) => p.completed)
+        const progress: Array<{ completed: boolean; score?: number }> = progressRes.success ? progressRes.data : []
+        const achievements: Array<unknown> = achievementsRes.success ? achievementsRes.data : []
+        const completed = progress.filter((p) => p.completed)
         setComputedStats({
           lessonsCompleted: completed.length,
-          quizScore: progress.reduce((sum: number, p: any) => sum + (p.score || 0), 0),
+          quizScore: progress.reduce((sum, p) => sum + (p.score || 0), 0),
           quizTotal: progress.length,
-          totalPoints: progress.reduce((sum: number, p: any) => sum + (p.score || 0), 0),
+          totalPoints: progress.reduce((sum, p) => sum + (p.score || 0), 0),
           achievements: achievements.length,
         })
       })

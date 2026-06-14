@@ -6,16 +6,15 @@ import { staggerContainer, fadeInUp } from '@/animations'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useAuthStore } from '@/store/auth-store'
+import type { Profile } from '@/types'
 import {
-  User, Mail, Lock, Bell, Eye, Volume2,
-  Smartphone, Monitor, Upload, Save,
+  User, Lock, Bell, Eye, Volume2,
+  Smartphone, Monitor, Save,
   Moon, Sun, Type, Palette, LogOut,
   Trash2
 } from 'lucide-react'
-import Link from 'next/link'
 import toast from 'react-hot-toast'
 
 export default function SettingsPage() {
@@ -59,7 +58,7 @@ export default function SettingsPage() {
         grade: profileForm.grade,
         school: profileForm.school,
         country: profileForm.country,
-      } as any,
+      } as Profile,
     })
     toast.success('Profile updated!')
   }

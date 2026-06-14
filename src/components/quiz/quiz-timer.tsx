@@ -13,8 +13,8 @@ interface QuizTimerProps {
 
 export function QuizTimer({ duration, onTimeout, isPaused, className }: QuizTimerProps) {
   const [timeLeft, setTimeLeft] = useState(duration)
-  const [isLow, setIsLow] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const isLow = timeLeft <= Math.ceil(duration * 0.2)
 
   useEffect(() => {
     if (isPaused) {
@@ -35,10 +35,6 @@ export function QuizTimer({ duration, onTimeout, isPaused, className }: QuizTime
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [isPaused, onTimeout])
-
-  useEffect(() => {
-    setIsLow(timeLeft <= Math.ceil(duration * 0.2))
-  }, [timeLeft, duration])
 
   const progress = timeLeft / duration
   const circumference = 2 * Math.PI * 54

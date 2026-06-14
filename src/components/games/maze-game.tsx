@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Star, RefreshCw, Zap, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Rocket } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -75,11 +75,6 @@ export function MazeGame() {
     setGameStarted(true)
     initLevel(0)
   }, [initLevel])
-
-  useEffect(() => {
-    if (!gameStarted) return
-    initLevel(0)
-  }, [gameStarted, initLevel])
 
   const move = (dr: number, dc: number) => {
     if (gameComplete) return

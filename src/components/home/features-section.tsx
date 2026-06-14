@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Gamepad2, BookOpen, Video, GraduationCap, BarChart3, Award, Sparkles } from 'lucide-react'
 
 const features = [
@@ -37,10 +37,10 @@ const features = [
   },
 ]
 
-function FeatureCard({ icon: Icon, title, desc, color, gradient, index }: {
+function FeatureCard({ icon: Icon, title, desc, color, index }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: React.ComponentType<any>
-  title: string; desc: string; color: string; gradient: string; index: number
+  title: string; desc: string; color: string; index: number
 }) {
   return (
     <motion.div
@@ -96,7 +96,6 @@ function FeatureCard({ icon: Icon, title, desc, color, gradient, index }: {
 
 export function FeaturesSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section ref={ref} className="relative py-24 overflow-hidden">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Star, RefreshCw, Volume2, Zap } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -30,18 +30,17 @@ export function SpellingGame() {
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
   const totalRounds = 5
 
-  const shuffled = useMemo(() => {
+  const [shuffled, setShuffled] = useState<typeof WORDS>([])
+
+  const current = shuffled[round % shuffled.length]
+
+  const initGame = useCallback(() => {
     const arr = [...WORDS]
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]]
     }
-    return arr
-  }, [])
-
-  const current = shuffled[round % shuffled.length]
-
-  const initGame = useCallback(() => {
+    setShuffled(arr)
     setRound(0)
     setScore(0)
     setGameComplete(false)

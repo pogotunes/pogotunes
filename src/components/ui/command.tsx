@@ -3,14 +3,13 @@
 import {
   forwardRef,
   useState,
-  useRef,
   useEffect,
   type ReactNode,
   type HTMLAttributes,
   type InputHTMLAttributes,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Command as CommandIcon } from "lucide-react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CommandProps extends HTMLAttributes<HTMLDivElement> {
@@ -47,7 +46,7 @@ function Command({
     }
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, setOpen]);
 
   return (
     <div className={cn("relative", className)} {...props}>
@@ -201,6 +200,7 @@ const CommandItem = forwardRef<HTMLDivElement, CommandItemProps>(
           className
         )}
         role="option"
+        aria-selected={false}
         onClick={() => onSelect?.(value || "")}
         {...props}
       >
@@ -234,7 +234,9 @@ const CommandShortcut = forwardRef<HTMLSpanElement, CommandShortcutProps>(
 
 CommandShortcut.displayName = "CommandShortcut";
 
-interface CommandSeparatorProps extends HTMLAttributes<HTMLDivElement> {}
+interface CommandSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+  className?: string;
+}
 
 const CommandSeparator = forwardRef<HTMLDivElement, CommandSeparatorProps>(
   ({ className, ...props }, ref) => (

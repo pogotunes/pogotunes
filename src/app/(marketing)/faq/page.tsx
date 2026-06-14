@@ -76,7 +76,7 @@ export default function FAQPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-lg text-white/60 font-nunito max-w-2xl mx-auto">
-              Everything you need to know about Pogo Tunes. Can't find what you're looking for? Contact us!
+              Everything you need to know about Pogo Tunes. Can&apos;t find what you&apos;re looking for? Contact us!
             </p>
           </motion.div>
 

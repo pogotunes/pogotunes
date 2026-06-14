@@ -9,11 +9,11 @@ import {
   Gamepad2,
   Play,
   Sparkles,
-  Video,
+  Video as VideoIcon,
 } from 'lucide-react'
 import { CATEGORIES, LESSON_TYPES } from '@/lib/constants'
-import type { Lesson } from '@/types'
-import { staggerContainer, staggerItem, fadeInUp } from '@/animations'
+import type { Lesson, Video, Quiz, Game, Flashcard, Difficulty, LessonType } from '@/types'
+import { staggerContainer, fadeInUp } from '@/animations'
 import { Breadcrumb } from '@/components/learning/breadcrumb'
 import { CategoryCard } from '@/components/learning/category-card'
 import { LessonCard } from '@/components/learning/lesson-card'
@@ -23,7 +23,7 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
 const sectionIcons = {
-  VIDEO: Video,
+  VIDEO: VideoIcon,
   ARTICLE: BookOpen,
   QUIZ: Brain,
   GAME: Gamepad2,
@@ -46,10 +46,28 @@ interface CategoryData {
   icon?: string
   color?: string
   lessons: Lesson[]
-  quizzes: any[]
-  games: any[]
-  videos: any[]
-  flashcards: any[]
+  quizzes: Quiz[]
+  games: Game[]
+  videos: Video[]
+  flashcards: Flashcard[]
+}
+
+interface CatalogItem {
+  id: string
+  slug: string
+  title: string
+  description?: string
+  duration?: number
+  difficulty?: string
+  type?: string
+  order?: number
+  tags: string[]
+  viewCount?: number
+  likeCount?: number
+  commentCount?: number
+  publishedAt?: string
+  createdAt: string
+  updatedAt: string
 }
 
 export default function CategoryPage() {
@@ -179,7 +197,7 @@ export default function CategoryPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {items.slice(0, 4).map((item: any) => {
+                    {items.slice(0, 4).map((item: CatalogItem) => {
                       const itemSlug = item.slug || ''
                       const href =
                         type === 'VIDEO' ? `/videos/${itemSlug}` :
@@ -199,8 +217,8 @@ export default function CategoryPage() {
                               categoryId: category.slug,
                               category: { id: category.slug, name: category.name, slug: category.slug, icon: category.icon || '', color: accentColor, order: 0, children: [], isActive: true, createdAt: '', updatedAt: '' },
                               duration: item.duration || 0,
-                              difficulty: item.difficulty || 'BEGINNER',
-                              type: item.type || type,
+                              difficulty: (item.difficulty || 'BEGINNER') as Difficulty,
+                              type: (item.type || type) as LessonType,
                               status: 'PUBLISHED',
                               order: item.order || 0,
                               isFree: true,

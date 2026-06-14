@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Star, RefreshCw, Zap } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -24,23 +24,29 @@ export function SpeedCountGame() {
   const count = ANSWERS[round % ANSWERS.length]
   const items = Array.from({ length: count })
 
+  const countdownRef = useRef(10)
+
   const initGame = useCallback(() => {
     setRound(0)
     setScore(0)
     setGameComplete(false)
     setGameStarted(true)
     setTimeLeft(10)
+    countdownRef.current = 10
   }, [])
 
   useEffect(() => {
     if (!gameStarted || gameComplete) return
-    if (timeLeft <= 0) {
-      setGameComplete(true)
-      return
-    }
-    const timer = setInterval(() => setTimeLeft(t => t - 1), 1000)
+    const timer = setInterval(() => {
+      countdownRef.current -= 1
+      setTimeLeft(countdownRef.current)
+      if (countdownRef.current <= 0) {
+        clearInterval(timer)
+        setGameComplete(true)
+      }
+    }, 1000)
     return () => clearInterval(timer)
-  }, [gameStarted, gameComplete, timeLeft])
+  }, [gameStarted, gameComplete])
 
   const options = [count - 2, count - 1, count, count + 1, count + 2].filter(n => n > 0)
 

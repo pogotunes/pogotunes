@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 
 const testimonials = [
@@ -34,7 +34,6 @@ const testimonials = [
 
 export function TestimonialsSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activeIndex, setActiveIndex] = useState(0)
 
   const next = () => setActiveIndex((prev) => (prev + 1) % testimonials.length)

@@ -20,7 +20,6 @@ const PAIRS = [
 ]
 
 export function WordMatchGame() {
-  const [round, setRound] = useState(0)
   const [score, setScore] = useState(0)
   const [gameStarted, setGameStarted] = useState(false)
   const [gameComplete, setGameComplete] = useState(false)
@@ -31,37 +30,32 @@ export function WordMatchGame() {
 
   const totalPairs = 5
 
-  const shuffledPairs = useMemo(() => {
-    const arr = [...PAIRS]
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]]
-    }
-    return arr
-  }, [])
+  const [shuffledPairs, setShuffledPairs] = useState<typeof PAIRS>([])
+  const [shuffledWords, setShuffledWords] = useState<string[]>([])
+  const [shuffledEmojis, setShuffledEmojis] = useState<string[]>([])
 
-  const currentPairs = shuffledPairs.slice(0, totalPairs)
-
-  const shuffledWords = useMemo(() => {
-    const arr = currentPairs.map(p => p.word)
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]]
-    }
-    return arr
-  }, [currentPairs])
-
-  const shuffledEmojis = useMemo(() => {
-    const arr = currentPairs.map(p => p.match)
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]]
-    }
-    return arr
-  }, [currentPairs])
+  const currentPairs = useMemo(() => shuffledPairs.slice(0, totalPairs), [shuffledPairs])
 
   const initGame = useCallback(() => {
-    setRound(0)
+    const pairs = [...PAIRS]
+    for (let i = pairs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pairs[i], pairs[j]] = [pairs[j], pairs[i]]
+    }
+    const selected = pairs.slice(0, totalPairs)
+    const words = selected.map(p => p.word)
+    for (let i = words.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [words[i], words[j]] = [words[j], words[i]]
+    }
+    const emojis = selected.map(p => p.match)
+    for (let i = emojis.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [emojis[i], emojis[j]] = [emojis[j], emojis[i]]
+    }
+    setShuffledPairs(pairs)
+    setShuffledWords(words)
+    setShuffledEmojis(emojis)
     setScore(0)
     setGameComplete(false)
     setSelectedWord(null)

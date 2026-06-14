@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { BookOpen, Gamepad2, Users, Grid3X3, Sparkles } from 'lucide-react'
+import { BookOpen, Gamepad2, Users, Grid3X3 } from 'lucide-react'
 
 function AnimatedCounter({ end, suffix = '', prefix = '' }: { end: number; suffix?: string; prefix?: string }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -35,7 +35,6 @@ const stats = [
 
 export function StatsSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section ref={ref} className="relative py-24 overflow-hidden">

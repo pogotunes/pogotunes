@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import {
   BookOpen, Calculator, FlaskConical, Book, Edit, Type, BookMarked,
@@ -56,7 +56,6 @@ interface CategoryItem {
 
 export function CategoriesSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [categories, setCategories] = useState<CategoryItem[]>([])
   const [loading, setLoading] = useState(true)
 

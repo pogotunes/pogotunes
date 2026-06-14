@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Play, Sparkles, Star, Heart, Rocket } from 'lucide-react'
 
@@ -15,7 +15,6 @@ const floatingDecorations = [
 
 export function CTASection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section ref={ref} className="relative py-32 overflow-hidden">
@@ -37,7 +36,7 @@ export function CTASection() {
 
       <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, white 0.5px, transparent 0.5px)', backgroundSize: '40px 40px' }} />
 
-      {floatingDecorations.map(({ Icon, color, x, y, size, delay }, i) => (
+      {floatingDecorations.map(({ Icon, x, y, size, delay }, i) => (
         <motion.div
           key={i}
           className="absolute pointer-events-none"

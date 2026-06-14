@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Star, Heart, Zap, RefreshCw, Gamepad2 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -28,7 +28,6 @@ export function MemoryMatchGame() {
   const [score, setScore] = useState(0)
   const [combo, setCombo] = useState(0)
   const [gameStarted, setGameStarted] = useState(false)
-  const [gameComplete, setGameComplete] = useState(false)
   const [lives, setLives] = useState(3)
   const totalPairs = 6
 
@@ -43,47 +42,48 @@ export function MemoryMatchGame() {
     setMoves(0)
     setScore(0)
     setCombo(0)
-    setGameComplete(false)
     setLives(3)
     setGameStarted(true)
   }, [])
 
-  useEffect(() => {
-    if (flippedIds.length !== 2) return
-    const [first, second] = flippedIds
-    const c1 = cards.find(c => c.id === first)
-    const c2 = cards.find(c => c.id === second)
-    if (c1 && c2 && c1.emoji === c2.emoji) {
-      setCards(prev => prev.map(c => c.id === first || c.id === second ? { ...c, matched: true } : c))
-      setMatchedPairs(p => p + 1)
-      setCombo(c => c + 1)
-      setScore(s => s + 10 * (combo + 1))
-      setFlippedIds([])
-    } else {
-      setCombo(0)
-      setLives(l => l - 1)
-      const timeout = setTimeout(() => {
-        setCards(prev => prev.map(c => c.id === first || c.id === second ? { ...c, flipped: false } : c))
-        setFlippedIds([])
-      }, 800)
-      return () => clearTimeout(timeout)
-    }
-  }, [flippedIds, cards, combo])
-
-  useEffect(() => {
-    if (gameStarted && matchedPairs === totalPairs) setGameComplete(true)
-  }, [gameStarted, matchedPairs])
-  useEffect(() => {
-    if (lives <= 0) setGameComplete(true)
-  }, [lives])
+  const gameComplete = useMemo(() =>
+    (gameStarted && matchedPairs === totalPairs) || lives <= 0,
+    [gameStarted, matchedPairs, totalPairs, lives]
+  )
 
   const handleClick = (id: number) => {
     if (flippedIds.length >= 2) return
     const card = cards.find(c => c.id === id)
     if (!card || card.flipped || card.matched) return
+
+    const newFlippedIds = [...flippedIds, id]
+    setFlippedIds(newFlippedIds)
     setMoves(m => m + 1)
-    setCards(prev => prev.map(c => c.id === id ? { ...c, flipped: true } : c))
-    setFlippedIds(prev => [...prev, id])
+
+    const updatedCards = cards.map(c => c.id === id ? { ...c, flipped: true } : c)
+    setCards(updatedCards)
+
+    if (newFlippedIds.length === 2) {
+      const [first, second] = newFlippedIds
+      const c1 = updatedCards.find(c => c.id === first)
+      const c2 = updatedCards.find(c => c.id === second)
+      if (c1 && c2 && c1.emoji === c2.emoji) {
+        setTimeout(() => {
+          setCards(prev => prev.map(c => c.id === first || c.id === second ? { ...c, matched: true } : c))
+          setMatchedPairs(p => p + 1)
+          setCombo(c => c + 1)
+          setScore(s => s + 10 * (combo + 1))
+          setFlippedIds([])
+        }, 500)
+      } else {
+        setCombo(0)
+        setLives(l => l - 1)
+        setTimeout(() => {
+          setCards(prev => prev.map(c => c.id === first || c.id === second ? { ...c, flipped: false } : c))
+          setFlippedIds([])
+        }, 800)
+      }
+    }
   }
 
   if (!gameStarted) {

@@ -195,7 +195,9 @@ const DropdownMenuItem = forwardRef<HTMLButtonElement, DropdownMenuItemProps>(
 
 DropdownMenuItem.displayName = "DropdownMenuItem";
 
-interface DropdownMenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {}
+interface DropdownMenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {
+  className?: string;
+}
 
 const DropdownMenuSeparator = forwardRef<HTMLDivElement, DropdownMenuSeparatorProps>(
   ({ className, ...props }, ref) => (

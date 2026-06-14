@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
 
 const characters = [
@@ -78,7 +78,7 @@ function CharacterCard({ name, emoji, color, title, desc, fact, personality, del
           <p className="text-white/50 text-sm leading-relaxed mb-4 font-nunito">{desc}</p>
 
           <div className="flex items-center justify-center gap-1.5 mb-4">
-            {personality.map((trait, i) => (
+            {personality.map((trait) => (
               <span
                 key={trait}
                 className="px-2.5 py-1 rounded-full text-[10px] font-semibold"
@@ -105,7 +105,6 @@ function CharacterCard({ name, emoji, color, title, desc, fact, personality, del
 
 export function CharactersSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section ref={ref} className="relative py-24 overflow-hidden">

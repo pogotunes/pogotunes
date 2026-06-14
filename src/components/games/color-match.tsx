@@ -29,15 +29,7 @@ export function ColorMatchGame() {
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
   const totalRounds = 8
 
-  const initGame = useCallback(() => {
-    setScore(0)
-    setRound(0)
-    setGameComplete(false)
-    setGameStarted(true)
-    nextRound(0)
-  }, [])
-
-  const nextRound = (roundNum: number) => {
+  const nextRound = useCallback((roundNum: number) => {
     const target = COLORS[roundNum % COLORS.length]
     const others = COLORS.filter(c => c.name !== target.name)
     const shuffled = [target, ...others.sort(() => Math.random() - 0.5).slice(0, 3)]
@@ -45,7 +37,15 @@ export function ColorMatchGame() {
     setTargetColor(target)
     setOptions(finalOptions)
     setFeedback(null)
-  }
+  }, [])
+
+  const initGame = useCallback(() => {
+    setScore(0)
+    setRound(0)
+    setGameComplete(false)
+    setGameStarted(true)
+    nextRound(0)
+  }, [nextRound])
 
   const handlePick = (color: typeof COLORS[0]) => {
     if (feedback) return

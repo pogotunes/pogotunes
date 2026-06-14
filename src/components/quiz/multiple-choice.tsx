@@ -73,6 +73,7 @@ export function MultipleChoice({
   }, [handleSelect, question.options])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelected(null)
     setShowResult(false)
     setShowHint(false)

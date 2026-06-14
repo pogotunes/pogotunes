@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { staggerContainer, fadeInUp } from '@/animations'
 import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import type { Progress } from '@/types'
 import Link from 'next/link'
 
 const quickActions = [
@@ -33,8 +33,8 @@ export default function DashboardPage() {
         const progress = progressRes.success ? progressRes.data : []
         const achievements = achievementsRes.success ? achievementsRes.data : []
         setStats({
-          lessonsDone: progress.filter((p: any) => p.completed).length,
-          totalPoints: progress.reduce((sum: number, p: any) => sum + (p.score || 0), 0),
+          lessonsDone: progress.filter((p: Progress) => p.completed).length,
+          totalPoints: progress.reduce((sum: number, p: Progress) => sum + (p.score || 0), 0),
           achievements: achievements.length,
           streak: 0,
         })

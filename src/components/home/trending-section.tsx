@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight, Clock, Star, Sparkles, Play, BookOpen, Music, Palette, Calculator, Brain, Shapes } from 'lucide-react'
 import type { Lesson } from '@/types'
@@ -25,7 +25,6 @@ const colors = ['#FF6B6B', '#FFD93D', '#6BCBFF', '#6C63FF', '#51CF66']
 export function TrendingSection() {
   const ref = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
   const [isPaused, setIsPaused] = useState(false)
@@ -137,7 +136,7 @@ export function TrendingSection() {
         >
           {lessons.slice(0, 8).map((lesson, i) => {
             const color = colors[i % colors.length]
-            const catName = (lesson as any).category?.name || ''
+            const catName = lesson.category?.name || ''
             const Icon = iconMap[catName.toLowerCase().replace(/\s+/g, '-')] || BookOpen
             const difficulty = lesson.difficulty?.toLowerCase() || 'beginner'
             return (

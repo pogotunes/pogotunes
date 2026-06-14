@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Play, Clock, ArrowRight, Music } from 'lucide-react'
 import type { Video } from '@/types'
@@ -96,7 +96,6 @@ function VideoCard({ title, category, duration, color, index, slug }: {
 
 export function VideosSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [videos, setVideos] = useState<Video[]>([])
 
   useEffect(() => {
@@ -147,7 +146,7 @@ export function VideosSection() {
             <VideoCard
               key={video.id}
               title={video.title}
-              category={(video as any).category?.name || 'General'}
+              category={video.category?.name || 'General'}
               duration={formatDuration(video.duration)}
               color={videoColors[i % videoColors.length]}
               slug={video.slug}

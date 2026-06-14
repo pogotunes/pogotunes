@@ -1,9 +1,9 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Trophy, Star, Zap, Flame, Medal, ArrowRight, Sparkles } from 'lucide-react'
+import { Trophy, Star, Flame, Medal, ArrowRight } from 'lucide-react'
 
 const badges = [
   { emoji: '🎯', name: 'First Steps', desc: 'Complete 1 lesson', color: '#FF6B6B' },
@@ -52,7 +52,6 @@ function BadgeCard({ emoji, name, desc, color, index }: {
 
 export function AchievementsSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section ref={ref} className="relative py-24 overflow-hidden">

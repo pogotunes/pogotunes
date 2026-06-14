@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Gamepad2, ArrowRight, Puzzle, Brain, Shapes, Palette, Target, Zap } from 'lucide-react'
 import type { Game } from '@/types'
@@ -95,7 +95,6 @@ function GameCard({ title, description, difficulty, color, index, slug }: {
 
 export function GamesSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [games, setGames] = useState<Game[]>([])
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Star, RefreshCw, Zap, TreePine, Fish, Bird } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -48,18 +48,17 @@ export function SortingGame() {
   const [streak, setStreak] = useState(0)
   const totalRounds = 8
 
-  const shuffled = useMemo(() => {
+  const [shuffled, setShuffled] = useState<SortItem[]>([])
+
+  const current = shuffled[round]
+
+  const initGame = useCallback(() => {
     const arr = [...ITEMS]
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]]
     }
-    return arr.slice(0, totalRounds)
-  }, [])
-
-  const current = shuffled[round]
-
-  const initGame = useCallback(() => {
+    setShuffled(arr.slice(0, totalRounds))
     setRound(0)
     setScore(0)
     setStreak(0)

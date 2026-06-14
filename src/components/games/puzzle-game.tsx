@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Star, RefreshCw, Zap, Shuffle } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -37,22 +37,17 @@ export function PuzzleGame() {
   const [tiles, setTiles] = useState<number[]>([])
   const [moves, setMoves] = useState(0)
   const [gameStarted, setGameStarted] = useState(false)
-  const [gameComplete, setGameComplete] = useState(false)
   const [sliding, setSliding] = useState<number | null>(null)
+
+  const solved = tiles.every((t, i) => t === (i + 1) % TOTAL)
+  const gameComplete = gameStarted && solved && moves > 0
 
   const initGame = useCallback(() => {
     setTiles(shuffleTiles())
     setMoves(0)
-    setGameComplete(false)
     setGameStarted(true)
     setSliding(null)
   }, [])
-
-  useEffect(() => {
-    if (!gameStarted || gameComplete) return
-    const won = tiles.every((t, i) => t === (i + 1) % TOTAL)
-    if (won && moves > 0) setGameComplete(true)
-  }, [tiles, gameStarted, gameComplete, moves])
 
   const canMove = (idx: number): boolean => {
     if (tiles[idx] === 0) return false
@@ -77,8 +72,6 @@ export function PuzzleGame() {
       setMoves(m => m + 1)
     }, 150)
   }
-
-  const solved = tiles.every((t, i) => t === (i + 1) % TOTAL)
 
   if (!gameStarted) {
     return (

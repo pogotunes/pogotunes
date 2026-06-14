@@ -1,10 +1,9 @@
 "use client";
 
 import {
-  forwardRef,
   useState,
+  useRef,
   type ReactNode,
-  type HTMLAttributes,
 } from "react";
 import {
   motion,
@@ -63,14 +62,14 @@ function Tooltip({
   className,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  let timeout: ReturnType<typeof setTimeout>;
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   const show = () => {
-    timeout = setTimeout(() => setIsVisible(true), delay);
+    timeoutRef.current = setTimeout(() => setIsVisible(true), delay);
   };
 
   const hide = () => {
-    clearTimeout(timeout);
+    clearTimeout(timeoutRef.current);
     setIsVisible(false);
   };
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Shield, GraduationCap, BarChart3, DollarSign, ArrowRight, Heart, Sparkles } from 'lucide-react'
 
@@ -75,7 +75,6 @@ function BenefitCard({ icon: Icon, title, desc, color, index }: {
 
 export function ParentsSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section ref={ref} className="relative py-24 overflow-hidden">

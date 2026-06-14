@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Shuffle, BookOpen, Sparkles } from 'lucide-react'
@@ -38,23 +38,21 @@ export default function FlashcardsPage() {
   const [direction, setDirection] = useState(0)
   const [knownCards, setKnownCards] = useState<Set<number>>(new Set())
   const [shuffled, setShuffled] = useState(false)
+  const [cards, setCards] = useState<CardData[]>([])
 
   useEffect(() => {
-    setLoading(true)
     fetch(`/api/flashcards/${slug}`)
       .then((r) => r.json())
       .then((res) => {
         if (res.success) {
-          setData(res.data)
+          const d = res.data
+          setData(d)
+          setCards(shuffled ? [...d.cards].sort(() => Math.random() - 0.5) : d.cards)
         }
       })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [slug])
-
-  const cards = useMemo(() => shuffled && data
-    ? [...data.cards].sort(() => Math.random() - 0.5)
-    : data?.cards ?? [], [shuffled, data])
 
   const currentCard = cards[currentIndex]
   const progress = cards.length > 0 ? ((currentIndex + 1) / cards.length) * 100 : 0
@@ -78,6 +76,17 @@ export default function FlashcardsPage() {
 
   const handleFlip = () => {
     setIsFlipped((prev) => !prev)
+  }
+
+  const handleToggleShuffle = () => {
+    const next = !shuffled
+    setShuffled(next)
+    if (data) {
+      setCards(next ? [...data.cards].sort(() => Math.random() - 0.5) : [...data.cards])
+    }
+    setCurrentIndex(0)
+    setIsFlipped(false)
+    setKnownCards(new Set())
   }
 
   const handleMarkKnown = () => {
@@ -160,7 +169,7 @@ export default function FlashcardsPage() {
                   variant="glass"
                   size="sm"
                   icon={<Shuffle className="w-4 h-4" />}
-                  onClick={() => setShuffled((s) => !s)}
+                  onClick={handleToggleShuffle}
                   aria-label="Shuffle cards"
                 />
               </div>

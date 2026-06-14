@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, LessonType, Difficulty, QuizType, GameType, Prisma } from "@prisma/client"
 import { PrismaPg } from "@prisma/adapter-pg"
 import bcrypt from "bcryptjs"
 
@@ -1277,8 +1277,8 @@ async function main() {
           description: `Learn about ${lesson.title.toLowerCase()} in this fun lesson!`,
           content: lesson.content,
           categoryId: catId,
-          type: lesson.type as any,
-          difficulty: lesson.difficulty as any,
+          type: lesson.type as LessonType,
+          difficulty: lesson.difficulty as Difficulty,
           status: "PUBLISHED",
           order: i,
           isFree: true,
@@ -1363,7 +1363,7 @@ async function main() {
           slug: quizData.slug,
           description: quizData.description,
           categoryId: catId,
-          type: quizData.type as any,
+          type: quizData.type as QuizType,
           difficulty: "BEGINNER",
           status: "PUBLISHED",
           timeLimit: quizData.timeLimit || null,
@@ -1446,10 +1446,10 @@ async function main() {
           slug: game.slug,
           description: game.description,
           categoryId: catId,
-          type: game.type as any,
-          difficulty: game.difficulty as any,
+          type: game.type as GameType,
+          difficulty: game.difficulty as Difficulty,
           status: "PUBLISHED",
-          config: (game.config ?? undefined) as any,
+          config: (game.config ?? undefined) as Prisma.InputJsonValue,
           isFree: true,
           tags: [catSlug],
           viewCount: Math.floor(Math.random() * 3000),

@@ -59,7 +59,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="text-lg text-white/60 font-nunito max-w-2xl mx-auto">
-              Have a question, suggestion, or just want to say hello? We'd love to hear from you!
+              Have a question, suggestion, or just want to say hello? We&apos;d love to hear from you!
             </p>
           </motion.div>
 
@@ -85,7 +85,7 @@ export default function ContactPage() {
                   <CheckCircle className="w-16 h-16 text-green mx-auto mb-4" />
                   <CardTitle className="text-white text-2xl mb-2">Message Sent!</CardTitle>
                   <CardDescription className="text-base">
-                    Thank you for reaching out. We'll get back to you soon.
+                    Thank you for reaching out. We&apos;ll get back to you soon.
                   </CardDescription>
                 </div>
               ) : (
