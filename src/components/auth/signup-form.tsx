@@ -12,7 +12,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { registerSchema, getPasswordStrength, type RegisterInput } from '@/lib/validations'
 import { useRegister } from '@/hooks/use-auth'
-import { SocialButtons } from '@/components/auth/social-buttons'
 import { cn } from '@/lib/utils'
 
 const fadeUp = {
@@ -429,17 +428,6 @@ export function SignupForm() {
             <><UserPlus className="h-4 w-4" /> Create Account</>
           )}
         </motion.button>
-      </motion.div>
-
-      <motion.div variants={fadeUp} className="relative">
-        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200 dark:border-white/10" /></div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-transparent text-gray-400 dark:text-gray-500">or sign up with</span>
-        </div>
-      </motion.div>
-
-      <motion.div variants={fadeUp}>
-        <SocialButtons />
       </motion.div>
 
       <motion.p variants={fadeUp} className="text-center text-sm text-gray-500 dark:text-gray-400">

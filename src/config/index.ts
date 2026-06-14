@@ -32,8 +32,7 @@ export const authConfig = {
   lockoutDuration: 15 * 60 * 1000,
   passwordMinLength: 6,
   passwordResetExpiry: 60 * 60 * 1000,
-  providers: ['credentials', 'google', 'facebook', 'github'] as const,
-  oauthRedirectUrl: '/auth/callback',
+  providers: ['credentials'] as const,
 }
 
 export const paginationConfig = {
@@ -105,7 +104,7 @@ export const cacheConfig = {
 }
 
 export const featureFlags = {
-  enableOAuth: true,
+  enableOAuth: false,
   enablePremium: true,
   enableAchievements: true,
   enableCertificates: true,
@@ -116,7 +115,7 @@ export const featureFlags = {
   enableAnalytics: false,
   enableAds: false,
   enableGamification: true,
-  enableSocialLogin: true,
+  enableSocialLogin: false,
   enableTwoFactor: false,
   enableDarkMode: true,
   enableAnimations: true,

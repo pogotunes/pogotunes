@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     question: 'How do I create an account?',
-    answer: 'Click the "Sign Up" button on the top right corner. You can register using an email address or sign in with Google, Facebook, or GitHub. Parents can create accounts for their children and monitor their progress.',
+    answer: 'Click the "Sign Up" button on the top right corner. You can register using an email address and password. Parents can create accounts for their children and monitor their progress.',
   },
   {
     question: 'Can I track my child\'s progress?',

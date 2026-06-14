@@ -123,32 +123,32 @@ const HINDI_LESSONS = [
 
 const VIDEOS_DATA: Record<string, Array<{ title: string; slug: string; url: string; description: string; duration: number; transcript?: string }>> = {
   mathematics: [
-    { title: "Counting Fun 1-100", slug: "counting-fun", url: "https://www.youtube.com/watch?v=example1", description: "A fun counting video for kids", duration: 300, transcript: "Let's count together! One, two, three..." },
-    { title: "Adding with Apples", slug: "adding-apples", url: "https://www.youtube.com/watch?v=example2", description: "Learn addition with apple examples", duration: 420 },
+    { title: "Counting Fun 1-100", slug: "counting-fun", url: "https://www.youtube.com/watch?v=OPW7CQ0Jc5I", description: "A fun counting video for kids", duration: 300, transcript: "Let's count together! One, two, three..." },
+    { title: "Adding with Apples", slug: "adding-apples", url: "https://www.youtube.com/watch?v=Wwz4LMpVRaM", description: "Learn addition with apple examples", duration: 420 },
   ],
   science: [
-    { title: "The Magic of Rainbows", slug: "magic-rainbows", url: "https://www.youtube.com/watch?v=example3", description: "How rainbows are made", duration: 360, transcript: "Rainbows happen when sunlight passes through water droplets..." },
-    { title: "Dinosaur Discovery", slug: "dinosaur-discovery", url: "https://www.youtube.com/watch?v=example4", description: "Learn about different dinosaurs", duration: 480 },
+    { title: "The Magic of Rainbows", slug: "magic-rainbows", url: "https://www.youtube.com/watch?v=gFqJgHyA7So", description: "How rainbows are made", duration: 360, transcript: "Rainbows happen when sunlight passes through water droplets..." },
+    { title: "Dinosaur Discovery", slug: "dinosaur-discovery", url: "https://www.youtube.com/watch?v=kz-MDch3FWo", description: "Learn about different dinosaurs", duration: 480 },
   ],
   "english-language": [
-    { title: "ABC Song", slug: "abc-song", url: "https://www.youtube.com/watch?v=example5", description: "Sing the alphabet", duration: 180 },
-    { title: "Learn Opposites", slug: "learn-opposites", url: "https://www.youtube.com/watch?v=example6", description: "Big and small, hot and cold", duration: 240 },
+    { title: "ABC Song", slug: "abc-song", url: "https://www.youtube.com/watch?v=BELlZKpi1Zs", description: "Sing the alphabet", duration: 180 },
+    { title: "Learn Opposites", slug: "learn-opposites", url: "https://www.youtube.com/watch?v=SJz7wOBK7d4", description: "Big and small, hot and cold", duration: 240 },
   ],
   space: [
-    { title: "The Moon Adventure", slug: "moon-adventure", url: "https://www.youtube.com/watch?v=example7", description: "Journey to the moon", duration: 420, transcript: "The moon orbits Earth every 27 days..." },
-    { title: "Stars and Constellations", slug: "stars-constellations", url: "https://www.youtube.com/watch?v=example8", description: "Find constellations in the night sky", duration: 360 },
+    { title: "The Moon Adventure", slug: "moon-adventure", url: "https://www.youtube.com/watch?v=LVV3Q7JEUSk", description: "Journey to the moon", duration: 420, transcript: "The moon orbits Earth every 27 days..." },
+    { title: "Stars and Constellations", slug: "stars-constellations", url: "https://www.youtube.com/watch?v=s6GfqJZp_SM", description: "Find constellations in the night sky", duration: 360 },
   ],
   animals: [
-    { title: "Ocean Animals", slug: "ocean-animals", url: "https://www.youtube.com/watch?v=example9", description: "Discover creatures under the sea", duration: 300 },
-    { title: "Farm Animals", slug: "farm-animals", url: "https://www.youtube.com/watch?v=example10", description: "Meet the animals on a farm", duration: 240 },
+    { title: "Ocean Animals", slug: "ocean-animals", url: "https://www.youtube.com/watch?v=5P7kZo8ZrnI", description: "Discover creatures under the sea", duration: 300 },
+    { title: "Farm Animals", slug: "farm-animals", url: "https://www.youtube.com/watch?v=6sYrSL7Qv38", description: "Meet the animals on a farm", duration: 240 },
   ],
   history: [
-    { title: "Ancient Egypt", slug: "ancient-egypt", url: "https://www.youtube.com/watch?v=example11", description: "Pyramids, pharaohs, and the Nile", duration: 480, transcript: "Ancient Egypt was one of the world's first civilizations..." },
-    { title: "Knights and Castles", slug: "knights-castles", url: "https://www.youtube.com/watch?v=example12", description: "Life in medieval times", duration: 420 },
+    { title: "Ancient Egypt", slug: "ancient-egypt", url: "https://www.youtube.com/watch?v=0h0pS7t0qjI", description: "Pyramids, pharaohs, and the Nile", duration: 480, transcript: "Ancient Egypt was one of the world's first civilizations..." },
+    { title: "Knights and Castles", slug: "knights-castles", url: "https://www.youtube.com/watch?v=cVRjLBNh2yQ", description: "Life in medieval times", duration: 420 },
   ],
   hindi: [
-    { title: "Hindi Swar Geet", slug: "hindi-swar-geet", url: "https://www.youtube.com/watch?v=hindiswar", description: "Sing along to the Hindi vowels song!", duration: 180, transcript: "अ से अनार, आ से आम..." },
-    { title: "Hindi Vyanjan Song", slug: "hindi-vyanjan-song", url: "https://www.youtube.com/watch?v=hindivyanjan", description: "Learn Hindi consonants with fun animations", duration: 240, transcript: "क से कबूतर, ख से खरगोश..." },
+    { title: "Hindi Swar Geet", slug: "hindi-swar-geet", url: "https://www.youtube.com/watch?v=pN2Q5hHMDyo", description: "Sing along to the Hindi vowels song!", duration: 180, transcript: "अ से अनार, आ से आम..." },
+    { title: "Hindi Vyanjan Song", slug: "hindi-vyanjan-song", url: "https://www.youtube.com/watch?v=yKFvBdOTNn8", description: "Learn Hindi consonants with fun animations", duration: 240, transcript: "क से कबूतर, ख से खरगोश..." },
   ],
 }
 
@@ -360,37 +360,797 @@ const GAMES_DATA: Record<string, Array<{ title: string; slug: string; type: stri
   ],
 }
 
-const lessonContentTemplate = (title: string, category: string) => `# ${title}
+const CATEGORY_LESSON_CONTENT: Record<string, string> = {
+  "writing": `# Introduction to Writing
 
-Welcome to this exciting lesson! Let's explore the wonderful world of ${category.toLowerCase()}.
+Writing is how we share our thoughts and ideas on paper! When you write, you can tell stories, send messages, and create amazing things.
 
 ## What You'll Learn
 
-In this lesson, you will discover amazing new concepts that will help you understand ${category.toLowerCase()} better.
+In this lesson, you will learn how to hold a pencil, form letters, and write your first words. Practice makes perfect!
 
 ## Key Concepts
 
-### Main Idea
-Start with the basics and build your understanding step by step. Every great learner starts from the beginning!
+### Grip and Posture
+Hold your pencil between your thumb and first finger. Sit up straight with both feet on the floor. This helps you write neatly!
 
-### Practice Time
-Try these examples yourself:
-1. Think about what you already know about ${category.toLowerCase()}
-2. Try the activities in this lesson
-3. Ask questions if something isn't clear
+### Letter Formation
+Start with capital letters — they are all the same height. Then practice lowercase letters. Remember: A, B, C!
 
-### Fun Fact
-Learning is like building a tower - you start with a strong foundation and add new knowledge brick by brick!
+### Your First Words
+Try writing simple words like "cat", "dog", and "sun". Say each letter as you write it.
+
+## Practice Time
+
+1. Trace the letter A five times
+2. Write your name
+3. Write three words that start with B
 
 ## Summary
 
-Great job! You've completed this lesson. Keep practicing and you'll become an expert in ${category.toLowerCase()}!
+Writing is a superpower! The more you practice, the better you'll become.`,
 
-## Try This
+  "spelling": `# Introduction to Spelling
 
-- Practice what you learned today
-- Share your new knowledge with friends and family
-- Come back tomorrow for another lesson!`
+Spelling is putting letters in the right order to make words. Good spelling helps others understand what you write!
+
+## What You'll Learn
+
+Learn how to spell common words using letter sounds and spelling rules.
+
+## Key Concepts
+
+### Sound It Out
+Say the word slowly: c-a-t. Each sound matches a letter. Blend them together to spell the word!
+
+### Common Patterns
+Many words follow patterns. Words like "cake", "make", and "take" all end with "ake".
+
+### Sight Words
+Some words don't follow the rules. Words like "the", "said", and "was" need to be memorized.
+
+## Practice Time
+
+1. Spell these words: hat, run, big, red
+2. Find three words that rhyme with "cat"
+3. Write a sentence using a sight word
+
+## Summary
+
+Great spellers practice every day. Keep learning new words and soon you'll be a spelling champion!`,
+
+  "vocabulary": `# Introduction to Vocabulary
+
+Vocabulary means all the words you know! The more words you know, the better you can read, write, and talk with others.
+
+## What You'll Learn
+
+Learn new words, what they mean, and how to use them in sentences.
+
+## Key Concepts
+
+### New Words Every Day
+Try to learn one new word each day. Write it down, learn its meaning, and use it in a sentence.
+
+### Synonyms and Antonyms
+Synonyms are words that mean the same thing (happy = joyful). Antonyms are opposites (hot vs cold).
+
+### Using Context Clues
+When you see a word you don't know, look at the words around it. They can help you figure out the meaning!
+
+## Practice Time
+
+1. What does "enormous" mean? (Hint: it's like "big")
+2. Find a synonym for "fast"
+3. Use the word "delicious" in a sentence
+
+## Summary
+
+Building your vocabulary opens up a world of understanding. Read books and ask about words you don't know!`,
+
+  "grammar": `# Introduction to Grammar
+
+Grammar is the set of rules that helps us speak and write correctly. Good grammar makes your sentences clear and easy to understand!
+
+## What You'll Learn
+
+Learn about nouns, verbs, adjectives, and how to build proper sentences.
+
+## Key Concepts
+
+### Nouns
+A noun is a person, place, or thing. Examples: teacher, school, book.
+
+### Verbs
+A verb is an action word. Examples: run, jump, read, sing.
+
+### Adjectives
+An adjective describes a noun. Examples: big, red, happy, soft.
+
+### Building Sentences
+A sentence needs a noun and a verb. "The dog runs." is a complete sentence!
+
+## Practice Time
+
+1. Find the noun in: "The girl reads a book."
+2. Find the verb in: "Birds fly in the sky."
+3. Add an adjective to: "The ___ cat slept."
+
+## Summary
+
+Grammar helps us communicate clearly. Practice making sentences every day!`,
+
+  "phonics": `# Introduction to Phonics
+
+Phonics is about connecting letters with their sounds. When you know phonics, you can read new words by sounding them out!
+
+## What You'll Learn
+
+Learn the sounds of each letter and how to blend them to read words.
+
+## Key Concepts
+
+### Letter Sounds
+Each letter makes a sound. A says "ah", B says "buh", C says "cuh". Practice all 26 letters!
+
+### Blending Sounds
+Push sounds together: c-a-t = cat! Start with short words and build up.
+
+### Digraphs
+Two letters can make one sound. "sh" makes the sound at the start of "ship". "ch" starts "chat".
+
+## Practice Time
+
+1. What sound does "M" make?
+2. Blend these: d-o-g, s-u-n, f-i-sh
+3. Find a word that starts with "sh"
+
+## Summary
+
+Phonics is the key to reading. Practice your letter sounds every day!`,
+
+  "geography": `# Introduction to Geography
+
+Geography is the study of our world — its mountains, rivers, countries, and the people who live there!
+
+## What You'll Learn
+
+Learn about continents, oceans, maps, and the amazing places on Earth.
+
+## Key Concepts
+
+### The Seven Continents
+Earth has seven big land areas: Asia, Africa, North America, South America, Antarctica, Europe, and Australia.
+
+### The Five Oceans
+Our planet has five oceans: Pacific, Atlantic, Indian, Southern, and Arctic.
+
+### Reading Maps
+Maps use symbols and colors to show where things are. Blue is water, green is land. A compass shows direction!
+
+## Practice Time
+
+1. Name the continent you live on
+2. Which ocean is the largest?
+3. Draw a simple map of your room
+
+## Summary
+
+Geography helps us understand our amazing world. There's always something new to discover!`,
+
+  "art": `# Introduction to Art
+
+Art is how we express our creativity through colors, shapes, and imagination. Everyone can be an artist!
+
+## What You'll Learn
+
+Learn about colors, drawing techniques, and famous artists who changed the world.
+
+## Key Concepts
+
+### Primary Colors
+Red, blue, and yellow are primary colors. You can mix them to make any other color!
+
+### Warm and Cool Colors
+Red, orange, and yellow are warm like sunshine. Blue, green, and purple are cool like water.
+
+### Shapes in Art
+Everything in art starts with basic shapes — circles, squares, and triangles.
+
+## Practice Time
+
+1. Mix blue and yellow paint — what color do you get?
+2. Draw a picture using only circles
+3. Color a picture using warm colors only
+
+## Summary
+
+Art lets your imagination run wild. Create something every day!`,
+
+  "music": `# Introduction to Music
+
+Music is made of sounds and silence arranged in beautiful patterns. It can make us happy, calm, or excited!
+
+## What You'll Learn
+
+Learn about notes, rhythm, instruments, and how music works.
+
+## Key Concepts
+
+### Beat and Rhythm
+The beat is the steady pulse in music. Tap your foot — that's the beat! Rhythm is the pattern of long and short sounds.
+
+### Notes and Scales
+Notes are the building blocks of music. Do-Re-Mi-Fa-So-La-Ti-Do is a scale!
+
+### Instruments
+Instruments make sounds in different ways: strings (guitar, violin), percussion (drums), and wind (flute, trumpet).
+
+## Practice Time
+
+1. Clap along to your favorite song
+2. Sing the Do-Re-Mi scale
+3. Name three instruments you know
+
+## Summary
+
+Music is a universal language. Sing, dance, and make music every day!`,
+
+  "memory": `# Introduction to Memory
+
+Memory is how your brain stores and remembers information. A good memory helps you learn faster and remember more!
+
+## What You'll Learn
+
+Learn how memory works and discover fun techniques to improve your memory.
+
+## Key Concepts
+
+### How Memory Works
+Your brain takes in information, stores it, and brings it back when needed. Like a computer!
+
+### Memory Tricks
+Use rhymes, songs, and pictures to remember things. "In 1492, Columbus sailed the ocean blue!"
+
+### Practice Makes Perfect
+The more you use your memory, the stronger it gets. Practice remembering small things every day.
+
+## Practice Time
+
+1. Memorize a short poem
+2. Remember a list of 5 items for 1 minute
+3. Use a rhyme to remember something new
+
+## Summary
+
+Your memory is like a muscle — exercise it every day to make it stronger!`,
+
+  "numbers": `# Introduction to Numbers
+
+Numbers are everywhere! We use them to count, measure, tell time, and so much more.
+
+## What You'll Learn
+
+Learn about counting, number order, and what numbers mean in our daily lives.
+
+## Key Concepts
+
+### Counting
+Count objects around you: toys, fingers, steps. Practice counting forward and backward.
+
+### Number Order
+Numbers have an order: 1, 2, 3, 4, 5... What comes after 7? Before 3?
+
+### Numbers in Daily Life
+Numbers tell us the time, the date, how much things cost, and your age!
+
+## Practice Time
+
+1. Count to 20 out loud
+2. Find five numbers in your kitchen
+3. What number comes after 15?
+
+## Summary
+
+Numbers are fun and useful. Count something every day!`,
+
+  "alphabet": `# Introduction to the Alphabet
+
+The alphabet has 26 letters that make up all the words in English! Learning them is your first step to reading.
+
+## What You'll Learn
+
+Learn to recognize, say, and write all 26 letters of the alphabet.
+
+## Key Concepts
+
+### Capital and Lowercase
+Each letter has two forms: capital (A) and lowercase (a). Both are important to learn!
+
+### Letter Order
+The alphabet has a special order: A, B, C, D, E... Sing the ABC song to remember it!
+
+### Letter Sounds
+Each letter makes at least one sound. A is for apple, B is for ball, C is for cat!
+
+## Practice Time
+
+1. Sing the ABC song
+2. Find something that starts with each letter of your name
+3. Trace the letters A through M
+
+## Summary
+
+The alphabet is the foundation of reading and writing. Practice your letters every day!`,
+
+  "nature": `# Introduction to Nature
+
+Nature is everything around us that isn't made by people — trees, flowers, rivers, mountains, and animals!
+
+## What You'll Learn
+
+Learn about plants, weather, seasons, and how to appreciate the natural world.
+
+## Key Concepts
+
+### Plants and Trees
+Plants make their own food using sunlight! Trees give us shade, fruit, and clean air.
+
+### Weather
+Weather is what happens in the sky each day: sunny, rainy, cloudy, windy, or snowy.
+
+### The Four Seasons
+Spring brings flowers, summer brings heat, fall brings colorful leaves, and winter brings snow!
+
+## Practice Time
+
+1. Name three types of trees
+2. What's your favorite season and why?
+3. Draw a picture of a sunny day
+
+## Summary
+
+Nature is beautiful and important. Go outside and explore the natural world!`,
+
+  "body-health": `# Introduction to Body & Health
+
+Your body is amazing! Learning how it works and how to take care of it helps you grow strong and healthy.
+
+## What You'll Learn
+
+Learn about body parts, the five senses, and healthy habits.
+
+## Key Concepts
+
+### Body Parts
+Your body has many parts: head, arms, legs, hands, and feet. Each part has a special job!
+
+### The Five Senses
+You see with your eyes, hear with your ears, smell with your nose, taste with your tongue, and touch with your skin.
+
+### Healthy Habits
+Eat fruits and vegetables, drink water, exercise, wash your hands, and get plenty of sleep!
+
+## Practice Time
+
+1. Name five body parts
+2. What sense do you use to read a book?
+3. List three healthy habits
+
+## Summary
+
+Take care of your body, and it will take care of you! Stay healthy and active.`,
+
+  "food-nutrition": `# Introduction to Food & Nutrition
+
+Food gives your body energy to grow, play, and learn. Eating the right foods helps you feel great!
+
+## What You'll Learn
+
+Learn about food groups, healthy eating, and where food comes from.
+
+## Key Concepts
+
+### Food Groups
+There are five food groups: fruits, vegetables, grains, proteins, and dairy. Eat from all groups every day!
+
+### Healthy vs Treat Foods
+Some foods give your body fuel (apples, carrots, milk). Others are treats for special days (cookies, candy).
+
+### Where Food Comes From
+Fruit grows on trees and vines. Vegetables grow in the ground. Milk comes from cows. Bread is made from wheat!
+
+## Practice Time
+
+1. Name a fruit from each color of the rainbow
+2. What food group does cheese belong to?
+3. Draw your favorite healthy meal
+
+## Summary
+
+Good food makes a strong body and a sharp mind. Make healthy choices!`,
+
+  "social-skills": `# Introduction to Social Skills
+
+Social skills help us get along with others, make friends, and work together. They are just as important as school subjects!
+
+## What You'll Learn
+
+Learn about sharing, listening, being kind, and solving problems with friends.
+
+## Key Concepts
+
+### Sharing and Taking Turns
+When you share, everyone gets a turn. It makes playtime more fun for everyone!
+
+### Listening Carefully
+Look at the person speaking and think about what they say. Good listeners make good friends.
+
+### Using Kind Words
+Say "please", "thank you", and "sorry". Kind words make others feel happy and respected.
+
+## Practice Time
+
+1. Practice saying "please" when you ask for something
+2. Let a friend go first today
+3. Tell someone something nice
+
+## Summary
+
+Being a good friend is a superpower. Practice kindness every day!`,
+
+  "emotions": `# Introduction to Emotions
+
+Emotions are feelings that everyone has — happy, sad, angry, scared, and excited. Learning about emotions helps us understand ourselves and others.
+
+## What You'll Learn
+
+Learn to name your feelings, understand why you feel them, and handle big emotions.
+
+## Key Concepts
+
+### Name That Feeling
+Can you name how you feel? Happy, sad, angry, surprised, scared, or loved? Naming feelings helps you handle them.
+
+### It's Okay to Feel
+All feelings are normal! Everyone feels sad sometimes and angry sometimes. What matters is what you do with your feelings.
+
+### Calming Down
+When you feel angry or upset, take deep breaths. Count to five. Talk to a grown-up about how you feel.
+
+## Practice Time
+
+1. Draw a face showing how you feel today
+2. Name something that makes you happy
+3. Practice taking three deep breaths
+
+## Summary
+
+Your feelings are important. Learn to understand them and express them in healthy ways!`,
+
+  "life-skills": `# Introduction to Life Skills
+
+Life skills are things you need to know to take care of yourself and help others. They make you more independent every day!
+
+## What You'll Learn
+
+Learn about personal hygiene, organization, safety, and helping at home.
+
+## Key Concepts
+
+### Taking Care of Yourself
+Brush your teeth, wash your hands, get dressed, and make your bed. Small tasks make a big difference!
+
+### Staying Organized
+Put your toys away after playing. Keep your school things in one place. Being organized saves time!
+
+### Staying Safe
+Know your full name, address, and phone number. Don't talk to strangers. Look both ways before crossing.
+
+## Practice Time
+
+1. Make your bed this morning
+2. Help set the table for dinner
+3. Memorize your home address
+
+## Summary
+
+Life skills help you grow up confident and capable. Practice one new skill each week!`,
+
+  "foreign-languages": `# Introduction to Foreign Languages
+
+Learning a new language opens doors to new cultures, friends, and adventures! It's like having a superpower.
+
+## What You'll Learn
+
+Learn basic greetings, numbers, and phrases in different languages.
+
+## Key Concepts
+
+### Greetings Around the World
+Hello in Spanish is "Hola". In French it's "Bonjour". In Hindi it's "Namaste". Learning greetings is a great start!
+
+### Counting in Other Languages
+Practice counting to 10 in Spanish: uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve, diez.
+
+### Why Learn Languages
+Speaking another language lets you talk to more people, travel easily, and understand other cultures better.
+
+## Practice Time
+
+1. Say "hello" in three different languages
+2. Count to 5 in Spanish
+3. Learn one new word in another language today
+
+## Summary
+
+Every new word in another language is a step toward connecting with the world!`,
+
+  "environment": `# Introduction to Environment
+
+The environment is everything around us — the air, water, land, and all living things. Protecting it is everyone's job!
+
+## What You'll Learn
+
+Learn about ecosystems, recycling, and how to take care of our planet.
+
+## Key Concepts
+
+### What is an Ecosystem?
+An ecosystem is a community of plants and animals living together. A pond, a forest, and a desert are all ecosystems.
+
+### The Three Rs
+Reduce, Reuse, Recycle! Use less, use again, and recycle what you can. Every small action helps.
+
+### Saving Energy and Water
+Turn off lights when you leave a room. Turn off the tap while brushing your teeth. Small habits save big resources!
+
+## Practice Time
+
+1. Sort items into recycling and trash
+2. Find something at home you can reuse
+3. Turn off a light when leaving a room
+
+## Summary
+
+Our planet is our home. Take care of it with small daily actions!`,
+
+  "technology": `# Introduction to Technology
+
+Technology is all around us — computers, tablets, phones, and even microwaves use technology to make our lives easier!
+
+## What You'll Learn
+
+Learn what technology is, how computers work, and how to use technology safely.
+
+## Key Concepts
+
+### What is Technology?
+Technology is any tool made by people to solve problems. A pencil is technology! A computer is technology too!
+
+### How Computers Work
+Computers take input (keyboard, mouse), process it (CPU), store it (memory), and show output (screen).
+
+### Screen Time Balance
+Technology is great, but too much screen time isn't good. Take breaks, play outside, and read books too!
+
+## Practice Time
+
+1. Name three examples of technology in your home
+2. Ask a grown-up how technology helps them at work
+3. Take a 15-minute break from screens
+
+## Summary
+
+Technology is a powerful tool. Use it wisely and balance it with other activities!`,
+
+  "critical-thinking": `# Introduction to Critical Thinking
+
+Critical thinking means thinking carefully before making a decision. It helps you solve problems and make good choices!
+
+## What You'll Learn
+
+Learn to ask questions, evaluate information, and think for yourself.
+
+## Key Concepts
+
+### Ask Questions
+Always ask "why?" and "how do you know?" Curious people make great critical thinkers.
+
+### Fact vs Opinion
+A fact can be proven true (water freezes at 0°C). An opinion is what someone thinks (chocolate is the best flavor).
+
+### Make Good Decisions
+Think about what might happen before you act. Consider different options and choose the best one.
+
+## Practice Time
+
+1. Tell your grown-up one fact and one opinion
+2. Think of two ways to solve a problem
+3. Ask "why?" about something new today
+
+## Summary
+
+Critical thinking helps you make smart choices. Question things and think for yourself!`,
+
+  "problem-solving": `# Introduction to Problem Solving
+
+Problems are challenges that need solutions. Learning to solve problems helps you in school, with friends, and in life!
+
+## What You'll Learn
+
+Learn a step-by-step method to solve any problem.
+
+## Key Concepts
+
+### The Problem-Solving Steps
+1. Identify the problem
+2. Think of possible solutions
+3. Try the best solution
+4. Check if it worked
+
+### Try Different Ways
+If one solution doesn't work, try another! Never give up after the first try.
+
+### Ask for Help
+Sometimes you need help solving a problem. Asking for help is smart, not giving up!
+
+## Practice Time
+
+1. Think of a small problem you had today
+2. List two ways you could solve it
+3. Try one solution and see if it works
+
+## Summary
+
+Every problem has a solution. Stay calm, think it through, and keep trying!`,
+
+  "logic-puzzles": `# Introduction to Logic & Puzzles
+
+Logic is about thinking carefully and making sense of things. Puzzles are fun challenges that test your logical thinking!
+
+## What You'll Learn
+
+Learn to solve puzzles, spot patterns, and think logically.
+
+## Key Concepts
+
+### Patterns
+Look for things that repeat: colors, shapes, numbers. Patterns help us predict what comes next.
+
+### Deduction
+Use clues to figure out the answer. "All birds have wings. A sparrow is a bird. So a sparrow has wings!"
+
+### Brain Teasers
+Riddles and puzzles make you think in new ways. They're fun and good for your brain!
+
+## Practice Time
+
+1. Complete this pattern: red, blue, red, blue, ___
+2. Solve: What has hands but can't clap?
+3. Make up your own riddle
+
+## Summary
+
+Logic and puzzles keep your brain sharp. Challenge yourself with a puzzle every day!`,
+
+  "colors-shapes": `# Introduction to Colors & Shapes
+
+Colors and shapes are everywhere! Recognizing them helps you understand and describe the world around you.
+
+## What You'll Learn
+
+Learn to identify basic colors and shapes, and how they appear in everyday life.
+
+## Key Concepts
+
+### Primary and Secondary Colors
+Red, yellow, and blue are primary colors. Mix them to get orange, green, and purple!
+
+### Basic Shapes
+Circle, square, triangle, and rectangle are the building blocks of everything we see.
+
+### Shapes in Nature
+Look around — the sun is a circle, a window is a rectangle, a mountain is a triangle!
+
+## Practice Time
+
+1. Find something red, something blue, and something yellow
+2. Count how many circles you see in your room
+3. Draw a house using only squares and triangles
+
+## Summary
+
+Colors and shapes make our world beautiful and interesting. Find them everywhere you go!`,
+
+  "animals": `# Introduction to Animals
+
+Animals are living creatures that share our planet. From tiny ants to giant whales, each animal is amazing in its own way!
+
+## What You'll Learn
+
+Learn about different types of animals, where they live, and what they need to survive.
+
+## Key Concepts
+
+### Mammals, Birds, Fish, and More
+Animals are grouped by their features. Mammals have fur and drink milk. Birds have feathers and lay eggs. Fish live in water and have gills.
+
+### Habitats
+Animals live in different habitats: forests, oceans, deserts, grasslands, and polar regions. Each habitat provides food and shelter.
+
+### What Animals Need
+All animals need food, water, shelter, and space to survive. Different animals eat different things — plants, other animals, or both!
+
+## Practice Time
+
+1. Name an animal that lives in each habitat
+2. Is a dolphin a mammal or a fish?
+3. Draw your favorite animal in its habitat
+
+## Summary
+
+Animals are our companions on Earth. Learn about them and help protect their homes!`,
+
+  "space": `# Introduction to Space
+
+Space is the vast, amazing universe beyond our planet Earth. It's filled with stars, planets, moons, and galaxies!
+
+## What You'll Learn
+
+Learn about our solar system, stars, and the incredible tools humans use to explore space.
+
+## Key Concepts
+
+### Our Solar System
+The Sun is a star at the center. Eight planets orbit around it: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.
+
+### Day and Night
+Earth spins like a top. When your part faces the Sun, it's day. When it faces away, it's night.
+
+### Exploring Space
+Rockets carry astronauts and satellites into space. The Moon is the only place in space where humans have walked!
+
+## Practice Time
+
+1. Name the planets in order from the Sun
+2. Why does the Moon change shape?
+3. Draw a picture of a rocket
+
+## Summary
+
+Space is the ultimate adventure. Keep looking up at the stars and wondering!`,
+
+  "history": `# Introduction to History
+
+History is the story of people who lived before us. It helps us understand how the world became what it is today!
+
+## What You'll Learn
+
+Learn about ancient civilizations, important events, and how people lived long ago.
+
+## Key Concepts
+
+### Ancient Civilizations
+The Egyptians built pyramids, the Romans built roads, and the Chinese invented paper. Each civilization contributed amazing things!
+
+### Measuring Time
+History is measured in years. BC means before the common era, and AD/CE means the common era. The further back, the older the event.
+
+### Learning from the Past
+History teaches us lessons. By studying what happened before, we can make better choices today.
+
+## Practice Time
+
+1. Name one thing the Ancient Egyptians are known for
+2. What year were you born?
+3. Ask a grandparent what life was like when they were young
+
+## Summary
+
+History helps us understand our world. Every day, you are making history too!`
+}
+
 
 async function main() {
   console.log("🌱 Starting seed...")
@@ -536,12 +1296,13 @@ async function main() {
   // Create short lessons for remaining categories
   for (const [catSlug, catId] of categoryMap) {
     if (allLessonData[catSlug]) continue
+    const title = `Introduction to ${catSlug.replace(/-/g, " ")}`
     const shortLesson = await prisma.lesson.create({
       data: {
-        title: `Introduction to ${catSlug.replace(/-/g, " ")}`,
+        title,
         slug: `intro-${catSlug}`,
         description: `Start learning about ${catSlug.replace(/-/g, " ")}!`,
-        content: lessonContentTemplate(`Introduction to ${catSlug.replace(/-/g, " ")}`, catSlug),
+        content: CATEGORY_LESSON_CONTENT[catSlug] || CATEGORY_LESSON_CONTENT["writing"],
         categoryId: catId,
         type: "ARTICLE",
         difficulty: "BEGINNER",
@@ -722,11 +1483,11 @@ async function main() {
   // Create sample blog posts
   console.log("Creating blog posts...")
   const blogPosts = [
-    { title: "10 Fun Ways to Learn Math at Home", slug: "fun-ways-learn-math", excerpt: "Discover creative and engaging ways to make math fun for your kids at home!", content: "Math doesn't have to be boring. Here are 10 fun ways to help your child enjoy mathematics...", tags: ["mathematics", "parenting", "tips"], category: "Parenting Tips" },
-    { title: "The Benefits of Educational Games for Kids", slug: "benefits-educational-games", excerpt: "How educational games can boost learning and development in children.", content: "Educational games combine fun with learning, helping children develop critical skills while having a great time...", tags: ["games", "education", "child-development"], category: "Education" },
-    { title: "Building a Reading Routine for Your Child", slug: "reading-routine", excerpt: "Simple steps to establish a daily reading habit that your child will love.", content: "Creating a consistent reading routine is one of the most important things you can do for your child's education...", tags: ["reading", "parenting", "literacy"], category: "Parenting Tips" },
-    { title: "Introduction to Coding for Kids Ages 5-7", slug: "coding-kids-5-7", excerpt: "Start your child's coding journey with these age-appropriate resources and activities.", content: "Teaching coding to young children doesn't require a computer. Start with unplugged activities that teach logical thinking...", tags: ["coding", "stem", "early-learning"], category: "STEM" },
-    { title: "Why Music Education Matters in Early Childhood", slug: "music-education-early-childhood", excerpt: "Research-backed benefits of music education for young children's development.", content: "Music education has profound effects on children's cognitive development, language skills, and emotional intelligence...", tags: ["music", "education", "child-development"], category: "Education" },
+    { title: "10 Fun Ways to Learn Math at Home", slug: "fun-ways-learn-math", excerpt: "Discover creative and engaging ways to make math fun for your kids at home!", content: "Math doesn't have to be boring. Here are 10 fun ways to help your child enjoy mathematics! From counting toys during playtime to baking cookies and measuring ingredients, math is everywhere. Try playing shopkeeper with pretend money, sorting socks by size and color, or singing counting songs during car rides. Board games like Snakes and Ladders teach number recognition, while building with blocks introduces geometry. Even setting the table practices one-to-one correspondence. The key is to make it playful, not pressured. When children see math as a game, they naturally want to participate and learn more.", tags: ["mathematics", "parenting", "tips"], category: "Parenting Tips" },
+    { title: "The Benefits of Educational Games for Kids", slug: "benefits-educational-games", excerpt: "How educational games can boost learning and development in children.", content: "Educational games combine fun with learning, helping children develop critical skills while having a great time! Research shows that game-based learning improves memory retention, problem-solving abilities, and social skills. When children play educational games, they practice patience, strategic thinking, and hand-eye coordination. Games also provide immediate feedback, which helps children understand cause and effect. Memory games strengthen neural pathways, puzzle games develop spatial reasoning, and word games build vocabulary. Most importantly, educational games create a positive association with learning that lasts a lifetime.", tags: ["games", "education", "child-development"], category: "Education" },
+    { title: "Building a Reading Routine for Your Child", slug: "reading-routine", excerpt: "Simple steps to establish a daily reading habit that your child will love.", content: "Creating a consistent reading routine is one of the most important things you can do for your child's education. Start by setting aside 15-20 minutes each day for reading together. Choose a comfortable, well-lit spot with minimal distractions. Let your child pick the books — even if they want to read the same story every night! Ask questions about the story to build comprehension: 'What do you think happens next?' or 'Why did the character do that?' Point to words as you read to build word recognition. Celebrate progress with a reading chart or sticker rewards. The goal is to make reading a cozy, anticipated part of the daily routine rather than a chore.", tags: ["reading", "parenting", "literacy"], category: "Parenting Tips" },
+    { title: "Introduction to Coding for Kids Ages 5-7", slug: "coding-kids-5-7", excerpt: "Start your child's coding journey with these age-appropriate resources and activities.", content: "Teaching coding to young children doesn't require a computer. Start with unplugged activities that teach logical thinking — like writing step-by-step instructions for making a sandwich or creating sequences with colored beads. Once they understand sequencing, introduce pattern recognition through everyday activities: sorting laundry by color, following recipes, or arranging toys by size. Free apps like ScratchJr and Kodable offer visual programming where children snap together blocks to create animations and simple games. The key concepts for ages 5-7 are sequences, patterns, loops, and debugging (finding and fixing mistakes). Celebrate the process, not just the result — every bug is a learning opportunity!", tags: ["coding", "stem", "early-learning"], category: "STEM" },
+    { title: "Why Music Education Matters in Early Childhood", slug: "music-education-early-childhood", excerpt: "Research-backed benefits of music education for young children's development.", content: "Music education has profound effects on children's cognitive development, language skills, and emotional intelligence. Studies show that children who receive music training develop better memory, attention span, and mathematical ability. Learning rhythm helps with pattern recognition, singing builds vocabulary and pronunciation, and playing instruments develops fine motor skills. Music also supports emotional development — children learn to express feelings through sound and movement. Group music activities teach cooperation, turn-taking, and listening skills. You don't need expensive instruments: pots and pans make drums, rice in a container makes a shaker, and rubber bands on a box make a guitar. The most important thing is to make music joyful and accessible every day.", tags: ["music", "education", "child-development"], category: "Education" },
   ]
 
   for (let i = 0; i < blogPosts.length; i++) {

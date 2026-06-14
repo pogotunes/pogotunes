@@ -4,12 +4,11 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, Sparkles, ArrowRight, Fingerprint } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, Sparkles, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { loginSchema, type LoginInput } from '@/lib/validations'
 import { useLogin } from '@/hooks/use-auth'
-import { SocialButtons } from '@/components/auth/social-buttons'
 import { cn } from '@/lib/utils'
 
 const fadeUp = {
@@ -25,7 +24,6 @@ const stagger = {
 export function LoginForm() {
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
-  const [isOtpMode, setIsOtpMode] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const loginMutation = useLogin()
 
@@ -113,16 +111,11 @@ export function LoginForm() {
       noValidate
     >
       <motion.div variants={fadeUp} className="text-center">
-        <h2 className="text-3xl font-bold font-baloo text-gray-900 dark:text-white">
-          {isOtpMode ? 'OTP Login' : 'Welcome Back'}
-        </h2>
-        <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">
-          {isOtpMode ? 'Enter your OTP sent to your email' : 'Sign in to continue learning'}
-        </p>
+        <h2 className="text-3xl font-bold font-baloo text-gray-900 dark:text-white">Welcome Back</h2>
+        <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">Sign in to continue learning</p>
       </motion.div>
 
-      {!isOtpMode && (
-        <motion.div variants={fadeUp} className="space-y-4">
+      <motion.div variants={fadeUp} className="space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Email Address
@@ -215,7 +208,7 @@ export function LoginForm() {
             </AnimatePresence>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center">
             <label className="flex items-center gap-2 cursor-pointer group">
               <input
                 type="checkbox"
@@ -228,34 +221,8 @@ export function LoginForm() {
               </div>
               <span className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">Remember me</span>
             </label>
-            <Link
-              href="/forgot-password"
-              className="text-sm text-[#6C63FF] hover:text-[#5A52E0] dark:text-[#8B85FF] dark:hover:text-[#9F9AFF] transition-colors font-medium"
-            >
-              Forgot Password?
-            </Link>
           </div>
         </motion.div>
-      )}
-
-      {isOtpMode && (
-        <motion.div variants={fadeUp}>
-          <div className="space-y-1.5">
-            <label htmlFor="otp-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-              <input
-                id="otp-email"
-                type="email"
-                placeholder="you@example.com"
-                className="w-full pl-10 pr-4 py-3 rounded-xl text-sm bg-white/70 dark:bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6C63FF]/50 focus:border-[#6C63FF] transition-all duration-200"
-              />
-            </div>
-          </div>
-        </motion.div>
-      )}
 
       <AnimatePresence>
         {loginMutation.error && (
@@ -299,30 +266,6 @@ export function LoginForm() {
             </>
           )}
         </motion.button>
-
-        <motion.button
-          type="button"
-          onClick={() => setIsOtpMode(!isOtpMode)}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
-          className="w-full py-3 rounded-xl font-medium text-sm text-[#6C63FF] dark:text-[#8B85FF] hover:bg-[#6C63FF]/5 dark:hover:bg-[#6C63FF]/10 transition-colors flex items-center justify-center gap-2"
-        >
-          <Fingerprint className="h-4 w-4" />
-          {isOtpMode ? 'Use Password Instead' : 'Login with OTP'}
-        </motion.button>
-      </motion.div>
-
-      <motion.div variants={fadeUp} className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200 dark:border-white/10" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-transparent text-gray-400 dark:text-gray-500">or continue with</span>
-        </div>
-      </motion.div>
-
-      <motion.div variants={fadeUp}>
-        <SocialButtons />
       </motion.div>
 
       <motion.p variants={fadeUp} className="text-center text-sm text-gray-500 dark:text-gray-400">
