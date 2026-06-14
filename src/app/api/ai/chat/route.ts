@@ -2,11 +2,11 @@ import { NextResponse } from "next/server"
 import { isAIConfigured } from "@/lib/env"
 
 const FREE_MODELS = [
-  "google/gemini-2.0-flash-exp:free",
-  "google/gemini-2.0-flash-lite-preview-02-05:free",
-  "mistralai/mistral-7b-instruct:free",
+  "openrouter/free",
   "meta-llama/llama-3.2-3b-instruct:free",
-  "cognitivecomputations/dolphin3.0-mistral-7b:free",
+  "google/gemma-4-26b-a4b-it:free",
+  "qwen/qwen3-coder:free",
+  "nousresearch/hermes-3-llama-3.1-405b:free",
 ]
 
 export async function POST(req: Request) {
@@ -41,6 +41,8 @@ export async function POST(req: Request) {
           headers: {
             Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
             "Content-Type": "application/json",
+            "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://pogotunes.netlify.app",
+            "X-Title": "Pogo Tunes",
           },
           body: JSON.stringify({
             model,
@@ -60,8 +62,8 @@ export async function POST(req: Request) {
         return NextResponse.json({ success: true, data: { reply } })
       }
 
-      const err = await response.text()
-      lastErr = `Model ${model}: HTTP ${response.status} - ${err.slice(0, 200)}`
+      const errBody = await response.text()
+      lastErr = `Model ${model}: HTTP ${response.status} - ${errBody.slice(0, 200)}`
       console.error("OpenRouter error:", lastErr)
     }
 
